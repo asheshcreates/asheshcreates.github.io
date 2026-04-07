@@ -37,3 +37,971 @@
     pointer-events: none;
     z-index: 9999;
   }
+
+  /* MENUBAR */
+  #menubar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 28px;
+    background: rgba(17,17,17,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--glass-border);
+    display: flex; align-items: center;
+    padding: 0 16px;
+    z-index: 1000;
+    gap: 20px;
+  }
+
+  .menu-logo {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.9;
+  }
+
+  .menu-items {
+    display: flex; gap: 18px;
+    margin-left: 12px;
+  }
+
+  .menu-item {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .menu-item:hover { opacity: 1; }
+
+  .menu-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 14px;
+  }
+
+  .menu-time {
+    font-size: 11px;
+    font-weight: 300;
+    opacity: 0.7;
+    letter-spacing: 0.03em;
+  }
+
+  /* DESKTOP */
+  #desktop {
+    position: fixed;
+    top: 28px; bottom: 80px;
+    left: 0; right: 0;
+    overflow: hidden;
+  }
+
+  /* SUBTLE VIGNETTE */
+  #desktop::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* AMBIENT TEXT */
+  #ambient {
+    position: absolute;
+    bottom: 60px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  #ambient .studio-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 8vw, 110px);
+    letter-spacing: 0.08em;
+    color: var(--white);
+    opacity: 0.04;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* FOLDER */
+  .folder {
+    position: absolute;
+    width: 90px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.15s ease;
+    animation: fadeInFolder 0.6s ease both;
+  }
+
+  @keyframes fadeInFolder {
+    from { opacity: 0; transform: scale(0.85) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .folder:hover .folder-icon { transform: scale(1.08); }
+  .folder:active { transform: scale(0.96); }
+
+  .folder-icon {
+    width: 80px;
+    height: 65px;
+    margin: 0 auto 6px;
+    display: block;
+    position: relative;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .folder-thumb {
+    width: 80px;
+    height: 65px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 0.5px solid var(--glass-border);
+    position: relative;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .folder-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+
+  .folder:hover .folder-thumb img { opacity: 1; }
+
+  .folder-tab {
+    position: absolute;
+    top: -6px; left: 4px;
+    width: 28px; height: 6px;
+    background: rgba(242,242,242,0.15);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .folder-label {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.75;
+    line-height: 1.3;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    padding: 0 4px;
+  }
+
+  /* WINDOW */
+  .window {
+    position: absolute;
+    width: 680px;
+    max-width: calc(100vw - 40px);
+    background: rgba(18,18,18,0.92);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 0.5px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 500;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
+    animation: windowOpen 0.25s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+    display: none;
+  }
+
+  @keyframes windowOpen {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .window.active { display: block; }
+  .window.focused { z-index: 600; }
+
+  .window-titlebar {
+    height: 40px;
+    background: rgba(30,30,30,0.95);
+    border-bottom: 0.5px solid var(--glass-border);
+    display: flex; align-items: center;
+    padding: 0 14px;
+    cursor: grab;
+    gap: 8px;
+  }
+
+  .window-titlebar:active { cursor: grabbing; }
+
+  .traffic-lights {
+    display: flex; gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .tl {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .tl:hover { filter: brightness(1.3); }
+  .tl.close { background: #FF5F57; }
+  .tl.min { background: #FFBD2E; }
+  .tl.max { background: #28C840; }
+
+  .window-title {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .window-body {
+    padding: 32px;
+    overflow-y: auto;
+    max-height: 70vh;
+  }
+
+  .window-body::-webkit-scrollbar { width: 4px; }
+  .window-body::-webkit-scrollbar-track { background: transparent; }
+  .window-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  .project-hero {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    display: block;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .project-hero-placeholder {
+    width: 100%;
+    height: 280px;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.3;
+  }
+
+  .project-category {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 10px;
+  }
+
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 36px;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+
+  .project-desc {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.8;
+    opacity: 0.65;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+  }
+
+  .project-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 0.5px solid rgba(242,242,242,0.2);
+    padding: 5px 12px;
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+
+  .project-divider {
+    height: 0.5px;
+    background: var(--glass-border);
+    margin: 24px 0;
+  }
+
+  .project-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .meta-item .meta-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.3;
+    margin-bottom: 4px;
+  }
+
+  .meta-item .meta-val {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
+
+  /* DOCK */
+  #dock {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(30,30,30,0.7);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.5px solid var(--glass-border);
+    border-radius: 18px;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .dock-divider {
+    width: 0.5px;
+    height: 36px;
+    background: var(--glass-border);
+    margin: 0 4px;
+    align-self: center;
+  }
+
+  .dock-item {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    background: rgba(255,255,255,0.06);
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .dock-item:hover {
+    transform: scale(1.35) translateY(-8px);
+  }
+
+  .dock-item .dock-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%; transform: translateX(-50%);
+    background: rgba(30,30,30,0.95);
+    border: 0.5px solid var(--glass-border);
+    color: var(--white);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
+
+  .dock-item:hover .dock-tooltip { opacity: 1; }
+
+  .dock-item.dock-folder {
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid var(--glass-border);
+    font-size: 18px;
+  }
+
+  /* ABOUT WINDOW SPECIFICS */
+  .about-portrait {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    display: block;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .about-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .about-title {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 24px;
+  }
+
+  .about-bio {
+    font-size: 13px;
+    line-height: 1.9;
+    opacity: 0.6;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+  }
+
+  .contact-line {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    opacity: 0.45;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  /* BOOT SCREEN */
+  #boot {
+    position: fixed; inset: 0;
+    background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 9998;
+    transition: opacity 0.8s ease;
+  }
+
+  #boot.hidden { opacity: 0; pointer-events: none; }
+
+  .boot-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: bootFade 1s ease 0.3s both;
+  }
+
+  @keyframes bootFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 0.7; transform: translateY(0); }
+  }
+
+  .boot-bar-wrap {
+    width: 120px;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .boot-bar {
+    height: 100%;
+    background: var(--white);
+    width: 0%;
+    border-radius: 1px;
+    animation: bootLoad 1.4s ease 0.5s both;
+  }
+
+  @keyframes bootLoad {
+    0% { width: 0%; }
+    60% { width: 75%; }
+    100% { width: 100%; }
+  }
+
+  /* SELECTION RECT */
+  #selection-rect {
+    position: absolute;
+    border: 0.5px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+    z-index: 50;
+    display: none;
+  }
+
+  /* CONTEXT MENU */
+  #context-menu {
+    position: fixed;
+    background: rgba(25,25,25,0.95);
+    backdrop-filter: blur(20px);
+    border: 0.5px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 6px 0;
+    z-index: 2000;
+    display: none;
+    min-width: 160px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  .ctx-item {
+    padding: 7px 16px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.1s;
+    opacity: 0.75;
+  }
+  .ctx-item:hover { background: rgba(255,255,255,0.07); opacity: 1; }
+  .ctx-sep { height: 0.5px; background: var(--glass-border); margin: 4px 0; }
+
+  /* STATUS TAG */
+  .status-badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  .status-production { background: rgba(255,189,46,0.12); color: #FFBD2E; border: 0.5px solid rgba(255,189,46,0.25); }
+  .status-complete { background: rgba(40,200,64,0.1); color: #28C840; border: 0.5px solid rgba(40,200,64,0.2); }
+  .status-ongoing { background: rgba(242,242,242,0.06); color: rgba(242,242,242,0.5); border: 0.5px solid var(--glass-border); }
+</style>
+</head>
+<body>
+
+<!-- BOOT -->
+<div id="boot">
+  <div class="boot-logo">Ashesh Arora Studios</div>
+  <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+</div>
+
+<!-- MENUBAR -->
+<div id="menubar">
+  <span class="menu-logo">AAS</span>
+  <div class="menu-items">
+    <span class="menu-item" onclick="openAbout()">About</span>
+    <span class="menu-item" onclick="tileWindows()">View</span>
+    <span class="menu-item" onclick="closeAllWindows()">Close All</span>
+  </div>
+  <div class="menu-right">
+    <span class="menu-time" id="clock"></span>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop">
+  <div id="ambient">
+    <div class="studio-name">ASHESH ARORA STUDIOS</div>
+  </div>
+  <div id="selection-rect"></div>
+</div>
+
+<!-- PROJECT WINDOWS -->
+<div class="window" id="win-tib" data-title="This Is Brampton">
+  <div class="window-titlebar">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWindow('win-tib')"></div>
+      <div class="tl min"></div>
+      <div class="tl max"></div>
+    </div>
+    <div class="window-title">This Is Brampton</div>
+    <div style="width:42px"></div>
+  </div>
+  <div class="window-body">
+    <div class="project-hero-placeholder">Film Still — In Production</div>
+    <div class="status-badge status-production">In Post-Production · 2026</div>
+    <div class="project-category">AI Film · Short Film</div>
+    <div class="project-title">This Is Brampton</div>
+    <div class="project-desc">Seven stories. One city. Told in wool and light.<br><br>Brampton isn't one story — it's seven happening at once. An AI-powered stop-motion short film following seven residents of one of Canada's most culturally dense cities, each carrying a world within them. Built entirely in AI, rendered in the tactile language of wool felt and stop-motion.</div>
+    <div class="project-tags">
+      <span class="tag">AI Film</span>
+      <span class="tag">Stop Motion</span>
+      <span class="tag">Wool Felt</span>
+      <span class="tag">Sora 2 Pro</span>
+      <span class="tag">Kling</span>
+    </div>
+    <div class="project-divider"></div>
+    <div class="project-meta">
+      <div class="meta-item"><div class="meta-label">Characters</div><div class="meta-val">Harbhajan · Priya · Marcus · Amara · Rina · Jordan · Claire</div></div>
+      <div class="meta-item"><div class="meta-label">Studio</div><div class="meta-val">Ashesh Arora Studios</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-val">AI Stop-Motion Short</div></div>
+      <div class="meta-item"><div class="meta-label">City</div><div class="meta-val">Brampton, Ontario</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="window" id="win-chatorey" data-title="Chatorey">
+  <div class="window-titlebar">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWindow('win-chatorey')"></div>
+      <div class="tl min"></div>
+      <div class="tl max"></div>
+    </div>
+    <div class="window-title">Chatorey</div>
+    <div style="width:42px"></div>
+  </div>
+  <div class="window-body">
+    <div class="project-hero-placeholder">Chatorey — Photography & Rebrand</div>
+    <div class="status-badge status-ongoing">Active Client · 2026</div>
+    <div class="project-category">Brand · Photography · Packaging</div>
+    <div class="project-title">Chatorey</div>
+    <div class="project-desc">A bold Indian street food brand based in Scarborough. They came with a brand identity and needed it brought to life — visually, consistently, and at a level that would stop the scroll.<br><br>Full menu photography shoot. Branded social content. Brand packaging direction. Art direction. Staff uniform system. Monthly artwork rotation for the dining space interior.</div>
+    <div class="project-tags">
+      <span class="tag">Rebrand</span>
+      <span class="tag">Photography</span>
+      <span class="tag">Packaging</span>
+      <span class="tag">Art Direction</span>
+      <span class="tag">Zine</span>
+    </div>
+    <div class="project-divider"></div>
+    <div class="project-meta">
+      <div class="meta-item"><div class="meta-label">Deliverables</div><div class="meta-val">Photography · Packaging · Zine · Uniforms</div></div>
+      <div class="meta-item"><div class="meta-label">Location</div><div class="meta-val">Scarborough, Ontario</div></div>
+      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Food & Hospitality</div></div>
+      <div class="meta-item"><div class="meta-label">Year</div><div class="meta-val">2026</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="window" id="win-pcoc" data-title="Belong — PCOC">
+  <div class="window-titlebar">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWindow('win-pcoc')"></div>
+      <div class="tl min"></div>
+      <div class="tl max"></div>
+    </div>
+    <div class="window-title">Belong — PCOC Gala 2026</div>
+    <div style="width:42px"></div>
+  </div>
+  <div class="window-body">
+    <div class="project-hero-placeholder">Belong · Campaign Visual</div>
+    <div class="status-badge status-production">Commission · May 2026</div>
+    <div class="project-category">Film · Campaign · Installation</div>
+    <div class="project-title">Belong</div>
+    <div class="project-desc">A commission for the Punjabi Chamber of Commerce Gala, May 2, 2026. A centrepiece short film and ambient loop installation built around one word — Belong.<br><br>Four creative pillars: Seen. Belonged. Culture. Ambition. The work explores what it means to find yourself in a city, a community, a moment.</div>
+    <div class="project-tags">
+      <span class="tag">Short Film</span>
+      <span class="tag">Installation</span>
+      <span class="tag">Campaign</span>
+      <span class="tag">PCOC</span>
+    </div>
+    <div class="project-divider"></div>
+    <div class="project-meta">
+      <div class="meta-item"><div class="meta-label">Client</div><div class="meta-val">Punjabi Chamber of Commerce</div></div>
+      <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-val">Belong</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-val">Film + Ambient Loop</div></div>
+      <div class="meta-item"><div class="meta-label">Event</div><div class="meta-val">May 2, 2026 — Gala</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="window" id="win-transformation" data-title="Transformation">
+  <div class="window-titlebar">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWindow('win-transformation')"></div>
+      <div class="tl min"></div>
+      <div class="tl max"></div>
+    </div>
+    <div class="window-title">Transformation</div>
+    <div style="width:42px"></div>
+  </div>
+  <div class="window-body">
+    <div class="project-hero-placeholder">Transformation — Personal Series</div>
+    <div class="status-badge status-production">In Production · 2026</div>
+    <div class="project-category">Personal Work · AI Film Series</div>
+    <div class="project-title">Transformation</div>
+    <div class="project-desc">A personal AI-generated visual art project. Five acts exploring identity, energy, and emergence through afrofuturist sci-fi — grounded and tactile.<br><br>The Burning · The Call · The Pull · The Crown · Kundalini.</div>
+    <div class="project-tags">
+      <span class="tag">Personal</span>
+      <span class="tag">AI Film</span>
+      <span class="tag">Afrofuturist</span>
+      <span class="tag">Five Acts</span>
+    </div>
+    <div class="project-divider"></div>
+    <div class="project-meta">
+      <div class="meta-item"><div class="meta-label">Acts</div><div class="meta-val">The Burning · The Call · The Pull · The Crown · Kundalini</div></div>
+      <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-val">Kling · Flow · Adobe · Suno</div></div>
+      <div class="meta-item"><div class="meta-label">Subject</div><div class="meta-val">Ashesh Arora</div></div>
+      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Personal IP</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="window" id="win-about" data-title="About">
+  <div class="window-titlebar">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWindow('win-about')"></div>
+      <div class="tl min"></div>
+      <div class="tl max"></div>
+    </div>
+    <div class="window-title">Ashesh Arora</div>
+    <div style="width:42px"></div>
+  </div>
+  <div class="window-body">
+    <div class="project-hero-placeholder">Portrait</div>
+    <div class="about-name">Ashesh Arora</div>
+    <div class="about-title">Creative Director · Brampton, Ontario</div>
+    <div class="about-bio">Ashesh Arora Studios is a purpose-driven creative production studio operating at the intersection of storytelling and brand identity. AI-powered filmmaking, visual campaigns, brand strategy, creative direction, photography.<br><br>A full end-to-end creative production house. Not a content agency. Not a freelancer. A studio built on two words: culture and connection.</div>
+    <div class="project-divider"></div>
+    <div class="contact-line">
+      ashesh@ashesharorastudios.com<br>
+      ashesharorastudios.com<br>
+      +1.647.395.2224<br>
+      8 Nelson St W, Brampton ON
+    </div>
+  </div>
+</div>
+
+<!-- DOCK -->
+<div id="dock">
+  <div class="dock-item dock-folder" onclick="openWindow('win-tib')" title="TIB">
+    🎬
+    <div class="dock-tooltip">This Is Brampton</div>
+  </div>
+  <div class="dock-item dock-folder" onclick="openWindow('win-chatorey')">
+    🌶️
+    <div class="dock-tooltip">Chatorey</div>
+  </div>
+  <div class="dock-item dock-folder" onclick="openWindow('win-pcoc')">
+    🎭
+    <div class="dock-tooltip">Belong — PCOC</div>
+  </div>
+  <div class="dock-item dock-folder" onclick="openWindow('win-transformation')">
+    ✦
+    <div class="dock-tooltip">Transformation</div>
+  </div>
+  <div class="dock-divider"></div>
+  <div class="dock-item" onclick="openAbout()">
+    👤
+    <div class="dock-tooltip">About</div>
+  </div>
+  <div class="dock-item" onclick="window.open('mailto:ashesh@ashesharorastudios.com')">
+    ✉️
+    <div class="dock-tooltip">Contact</div>
+  </div>
+  <div class="dock-item" onclick="window.open('https://instagram.com')">
+    📷
+    <div class="dock-tooltip">Instagram</div>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div id="context-menu">
+  <div class="ctx-item" onclick="openAllProjects()">Open All Projects</div>
+  <div class="ctx-item" onclick="tileWindows()">Arrange Windows</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="openAbout()">About Ashesh Arora Studios</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="closeAllWindows()">Close All</div>
+</div>
+
+<script>
+// ── CLOCK ──────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+}
+updateClock(); setInterval(updateClock, 1000);
+
+// ── BOOT ───────────────────────────────────────────────
+setTimeout(() => {
+  document.getElementById('boot').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('boot').remove();
+    spawnFolders();
+  }, 800);
+}, 2200);
+
+// ── FOLDERS ────────────────────────────────────────────
+const projects = [
+  { id: 'win-tib', label: 'This Is\nBrampton', emoji: '🎬', delay: 0 },
+  { id: 'win-chatorey', label: 'Chatorey', emoji: '🌶️', delay: 80 },
+  { id: 'win-pcoc', label: 'Belong\nPCOC', emoji: '🎭', delay: 160 },
+  { id: 'win-transformation', label: 'Transfor-\nmation', emoji: '✦', delay: 240 },
+];
+
+const positions = [
+  { x: 60, y: 60 },
+  { x: 180, y: 120 },
+  { x: 80, y: 260 },
+  { x: 200, y: 340 },
+];
+
+function spawnFolders() {
+  const desktop = document.getElementById('desktop');
+  projects.forEach((p, i) => {
+    const folder = document.createElement('div');
+    folder.className = 'folder';
+    folder.id = 'folder-' + p.id;
+    folder.style.left = positions[i].x + 'px';
+    folder.style.top = positions[i].y + 'px';
+    folder.style.animationDelay = p.delay + 'ms';
+    folder.innerHTML = `
+      <div class="folder-icon">
+        <div class="folder-tab"></div>
+        <div class="folder-thumb">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px;background:rgba(255,255,255,0.03);">${p.emoji}</div>
+        </div>
+      </div>
+      <div class="folder-label">${p.label}</div>
+    `;
+    folder.addEventListener('dblclick', () => openWindow(p.id));
+    desktop.appendChild(folder);
+    makeDraggable(folder);
+  });
+}
+
+// ── WINDOW MANAGEMENT ──────────────────────────────────
+let zTop = 500;
+
+function openWindow(id) {
+  const win = document.getElementById(id);
+  if (!win) return;
+  win.classList.add('active', 'focused');
+  bringToFront(win);
+
+  // Center if first open
+  if (!win.dataset.positioned) {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const w = Math.min(680, vw - 40);
+    const h = 500;
+    win.style.left = Math.max(20, (vw - w) / 2 + (Math.random() * 60 - 30)) + 'px';
+    win.style.top = Math.max(48, (vh - h) / 2 + (Math.random() * 40 - 20)) + 'px';
+    win.style.width = w + 'px';
+    win.dataset.positioned = '1';
+  }
+
+  makeDraggable(win, '.window-titlebar');
+  win.addEventListener('mousedown', () => bringToFront(win));
+}
+
+function closeWindow(id) {
+  const win = document.getElementById(id);
+  if (win) {
+    win.style.transform = 'scale(0.9)';
+    win.style.opacity = '0';
+    win.style.transition = 'all 0.18s ease';
+    setTimeout(() => {
+      win.classList.remove('active', 'focused');
+      win.style.transform = '';
+      win.style.opacity = '';
+      win.style.transition = '';
+    }, 180);
+  }
+}
+
+function bringToFront(win) {
+  zTop++;
+  win.style.zIndex = zTop;
+  document.querySelectorAll('.window').forEach(w => w.classList.remove('focused'));
+  win.classList.add('focused');
+}
+
+function openAbout() { openWindow('win-about'); }
+
+function closeAllWindows() {
+  document.querySelectorAll('.window.active').forEach(w => closeWindow(w.id));
+}
+
+function openAllProjects() {
+  projects.forEach((p, i) => {
+    setTimeout(() => openWindow(p.id), i * 80);
+  });
+}
+
+function tileWindows() {
+  const active = Array.from(document.querySelectorAll('.window.active'));
+  if (!active.length) return;
+  const cols = Math.ceil(Math.sqrt(active.length));
+  const rows = Math.ceil(active.length / cols);
+  const vw = window.innerWidth, vh = window.innerHeight - 108;
+  const w = Math.floor(vw / cols) - 16;
+  const h = Math.floor(vh / rows) - 16;
+  active.forEach((win, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    win.style.left = (col * (w + 16) + 8) + 'px';
+    win.style.top = (row * (h + 16) + 36) + 'px';
+    win.style.width = w + 'px';
+    win.style.transition = 'all 0.3s cubic-bezier(0.4,0,0.2,1)';
+    setTimeout(() => win.style.transition = '', 300);
+  });
+}
+
+// ── DRAG ───────────────────────────────────────────────
+function makeDraggable(el, handleSelector) {
+  const handle = handleSelector ? el.querySelector(handleSelector) : el;
+  if (!handle || handle._draggable) return;
+  handle._draggable = true;
+
+  let startX, startY, startL, startT;
+
+  handle.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    if (e.target.classList.contains('tl')) return;
+    e.preventDefault();
+
+    startX = e.clientX; startY = e.clientY;
+    const rect = el.getBoundingClientRect();
+    const parent = el.parentElement || document.body;
+    const pr = parent.getBoundingClientRect ? parent.getBoundingClientRect() : { left: 0, top: 0 };
+    startL = rect.left - pr.left;
+    startT = rect.top - pr.top;
+
+    if (el.classList.contains('window')) bringToFront(el);
+
+    const move = e2 => {
+      const dx = e2.clientX - startX, dy = e2.clientY - startY;
+      el.style.left = (startL + dx) + 'px';
+      el.style.top = Math.max(28, startT + dy) + 'px';
+    };
+    const up = () => {
+      document.removeEventListener('mousemove', move);
+      document.removeEventListener('mouseup', up);
+    };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+}
+
+// ── CONTEXT MENU ───────────────────────────────────────
+const ctxMenu = document.getElementById('context-menu');
+
+document.getElementById('desktop').addEventListener('contextmenu', e => {
+  e.preventDefault();
+  ctxMenu.style.display = 'block';
+  ctxMenu.style.left = Math.min(e.clientX, window.innerWidth - 180) + 'px';
+  ctxMenu.style.top = Math.min(e.clientY, window.innerHeight - 160) + 'px';
+});
+
+document.addEventListener('click', () => { ctxMenu.style.display = 'none'; });
+document.addEventListener('contextmenu', e => {
+  if (!e.target.closest('#desktop')) ctxMenu.style.display = 'none';
+});
+
+// ── DOCK MAGNIFICATION ─────────────────────────────────
+const dockItems = document.querySelectorAll('.dock-item');
+document.getElementById('dock').addEventListener('mousemove', e => {
+  dockItems.forEach(item => {
+    const rect = item.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const dist = Math.abs(e.clientX - cx);
+    const max = 80;
+    const scale = dist < max ? 1 + (1 - dist / max) * 0.5 : 1;
+    const lift = dist < max ? -(1 - dist / max) * 12 : 0;
+    item.style.transform = `scale(${scale}) translateY(${lift}px)`;
+  });
+});
+
+document.getElementById('dock').addEventListener('mouseleave', () => {
+  dockItems.forEach(item => {
+    item.style.transform = '';
+  });
+});
+</script>
+</body>
+</html>
