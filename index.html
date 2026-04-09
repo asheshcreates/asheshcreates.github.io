@@ -12,7 +12,7 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#1c1c1c;color:#f0f0f0;font-family:var(--font);user-select:none;cursor:default;}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04;pointer-events:none;z-index:9999;}
  
-#bg{position:fixed;inset:0;background-image:url('bg.jpg');background-size:cover;background-position:center top;background-repeat:no-repeat;z-index:0;}
+#bg{position:fixed;inset:0;background-image:url('bg.png');background-size:cover;background-position:center top;background-repeat:no-repeat;z-index:0;}
 #bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,0.3) 100%);}
  
 #menubar{position:fixed;top:0;left:0;right:0;height:28px;background:rgba(18,18,18,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;padding:0 16px;z-index:1000;gap:20px;}
@@ -173,7 +173,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="contact-section-title">Contact</div>
       <div class="contact-row">
         <div class="c-icon email">✉</div>
-        <div class="contact-text"><a href="mailto:ashesh@ashesharorastudios.com">ashesh@ashesharorastudios.com</a></div>
+        <div class="contact-text"><a href="/cdn-cgi/l/email-protection#4a2b39222f39220a2b39222f39222b3825382b393e3f2e23253964292527"><span class="__cf_email__" data-cfemail="f594869d90869db594869d90869d94879a8794868180919c9a86db969a98">[email&#160;protected]</span></a></div>
       </div>
       <div class="contact-row">
         <div class="c-icon web">🌐</div>
@@ -194,7 +194,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d92610.18!2d-79.7624!3d43.7315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b15eaa5e0f05b%3A0xda1c4f47d7d7e7a3!2sBrampton%2C%20ON!5e0!3m2!1sen!2sca!4v1" allowfullscreen="" loading="lazy"></iframe>
       </div>
     </div>
-    <a class="contact-cta" href="mailto:ashesh@ashesharorastudios.com">Contact me</a>
+    <a class="contact-cta" href="/cdn-cgi/l/email-protection#1b7a68737e68735b7a68737e68737a6974697a686f6e7f72746835787476">Contact me</a>
   </div>
   <div class="resize-handle"></div>
 </div>
@@ -233,7 +233,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <h3>Background</h3>
       <p>Brand photography, creative direction, campaign strategy, AI film production. Working with startups, premium brands, and multicultural communities across the GTA and beyond.</p>
       <h3>Contact</h3>
-      <p>ashesh@ashesharorastudios.com · +1.647.395.2224 · 8 Nelson St W, Brampton ON</p>
+      <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="610012090412092100120904120900130e130012151405080e124f020e0c">[email&#160;protected]</a> · +1.647.395.2224 · 8 Nelson St W, Brampton ON</p>
     </div>
   </div>
   <div class="resize-handle"></div>
@@ -404,7 +404,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
 </div>
  
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CLOCK
 function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
 tick();setInterval(tick,1000);
@@ -556,19 +556,4 @@ const dockItems=document.querySelectorAll('.dock-item');
 dockEl.addEventListener('mousemove',e=>{
   dockItems.forEach(item=>{
     const r=item.getBoundingClientRect();
-    const cx=r.left+r.width/2;
-    const dist=Math.abs(e.clientX-cx);
-    const max=90;
-    const scale=dist<max?1+(1-dist/max)*0.42:1;
-    const lift=dist<max?-(1-dist/max)*14:0;
-    item.style.transform=`scale(${scale}) translateY(${lift}px)`;
-  });
-});
-dockEl.addEventListener('mouseleave',()=>{
-  dockItems.forEach(item=>item.style.transform='');
-});
- 
-document.getElementById('desktop').addEventListener('contextmenu',e=>e.preventDefault());
-</script>
-</body>
-</html>
+    const cx=r.left+r.wid
