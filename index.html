@@ -7,1001 +7,568 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --black: #111111;
-    --white: #F2F2F2;
-    --grey: #888;
-    --glass: rgba(242,242,242,0.06);
-    --glass-border: rgba(242,242,242,0.12);
-  }
-
-  html, body {
-    width: 100%; height: 100%;
-    overflow: hidden;
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Raleway', sans-serif;
-    font-weight: 300;
-    cursor: default;
-    user-select: none;
-  }
-
-  /* GRAIN OVERLAY */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.035;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* MENUBAR */
-  #menubar {
-    position: fixed; top: 0; left: 0; right: 0;
-    height: 28px;
-    background: rgba(17,17,17,0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid var(--glass-border);
-    display: flex; align-items: center;
-    padding: 0 16px;
-    z-index: 1000;
-    gap: 20px;
-  }
-
-  .menu-logo {
-    font-family: 'Raleway', sans-serif;
-    font-weight: 200;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--white);
-    opacity: 0.9;
-  }
-
-  .menu-items {
-    display: flex; gap: 18px;
-    margin-left: 12px;
-  }
-
-  .menu-item {
-    font-size: 11px;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    color: var(--white);
-    opacity: 0.6;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .menu-item:hover { opacity: 1; }
-
-  .menu-right {
-    margin-left: auto;
-    display: flex; align-items: center; gap: 14px;
-  }
-
-  .menu-time {
-    font-size: 11px;
-    font-weight: 300;
-    opacity: 0.7;
-    letter-spacing: 0.03em;
-  }
-
-  /* DESKTOP */
-  #desktop {
-    position: fixed;
-    top: 28px; bottom: 80px;
-    left: 0; right: 0;
-    overflow: hidden;
-  }
-
-  /* SUBTLE VIGNETTE */
-  #desktop::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* AMBIENT TEXT */
-  #ambient {
-    position: absolute;
-    bottom: 60px; left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  #ambient .studio-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(48px, 8vw, 110px);
-    letter-spacing: 0.08em;
-    color: var(--white);
-    opacity: 0.04;
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  /* FOLDER */
-  .folder {
-    position: absolute;
-    width: 90px;
-    cursor: pointer;
-    z-index: 10;
-    transition: transform 0.15s ease;
-    animation: fadeInFolder 0.6s ease both;
-  }
-
-  @keyframes fadeInFolder {
-    from { opacity: 0; transform: scale(0.85) translateY(8px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-
-  .folder:hover .folder-icon { transform: scale(1.08); }
-  .folder:active { transform: scale(0.96); }
-
-  .folder-icon {
-    width: 80px;
-    height: 65px;
-    margin: 0 auto 6px;
-    display: block;
-    position: relative;
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .folder-thumb {
-    width: 80px;
-    height: 65px;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 0.5px solid var(--glass-border);
-    position: relative;
-    background: rgba(255,255,255,0.04);
-  }
-
-  .folder-thumb img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0.85;
-    transition: opacity 0.2s;
-  }
-
-  .folder:hover .folder-thumb img { opacity: 1; }
-
-  .folder-tab {
-    position: absolute;
-    top: -6px; left: 4px;
-    width: 28px; height: 6px;
-    background: rgba(242,242,242,0.15);
-    border-radius: 3px 3px 0 0;
-  }
-
-  .folder-label {
-    text-align: center;
-    font-size: 10px;
-    font-weight: 300;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--white);
-    opacity: 0.75;
-    line-height: 1.3;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-    padding: 0 4px;
-  }
-
-  /* WINDOW */
-  .window {
-    position: absolute;
-    width: 680px;
-    max-width: calc(100vw - 40px);
-    background: rgba(18,18,18,0.92);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 0.5px solid var(--glass-border);
-    border-radius: 12px;
-    overflow: hidden;
-    z-index: 500;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
-    animation: windowOpen 0.25s cubic-bezier(0.34, 1.2, 0.64, 1) both;
-    display: none;
-  }
-
-  @keyframes windowOpen {
-    from { opacity: 0; transform: scale(0.92); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .window.active { display: block; }
-  .window.focused { z-index: 600; }
-
-  .window-titlebar {
-    height: 40px;
-    background: rgba(30,30,30,0.95);
-    border-bottom: 0.5px solid var(--glass-border);
-    display: flex; align-items: center;
-    padding: 0 14px;
-    cursor: grab;
-    gap: 8px;
-  }
-
-  .window-titlebar:active { cursor: grabbing; }
-
-  .traffic-lights {
-    display: flex; gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .tl {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: filter 0.15s;
-  }
-  .tl:hover { filter: brightness(1.3); }
-  .tl.close { background: #FF5F57; }
-  .tl.min { background: #FFBD2E; }
-  .tl.max { background: #28C840; }
-
-  .window-title {
-    flex: 1;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0.5;
-  }
-
-  .window-body {
-    padding: 32px;
-    overflow-y: auto;
-    max-height: 70vh;
-  }
-
-  .window-body::-webkit-scrollbar { width: 4px; }
-  .window-body::-webkit-scrollbar-track { background: transparent; }
-  .window-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-
-  .project-hero {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 28px;
-    display: block;
-    background: rgba(255,255,255,0.04);
-  }
-
-  .project-hero-placeholder {
-    width: 100%;
-    height: 280px;
-    border-radius: 6px;
-    margin-bottom: 28px;
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid var(--glass-border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.3;
-  }
-
-  .project-category {
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    opacity: 0.4;
-    margin-bottom: 10px;
-  }
-
-  .project-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: 36px;
-    letter-spacing: 0.05em;
-    line-height: 1.1;
-    margin-bottom: 20px;
-    color: var(--white);
-  }
-
-  .project-desc {
-    font-size: 13px;
-    font-weight: 300;
-    line-height: 1.8;
-    opacity: 0.65;
-    letter-spacing: 0.02em;
-    margin-bottom: 24px;
-  }
-
-  .project-tags {
-    display: flex; flex-wrap: wrap; gap: 8px;
-  }
-
-  .tag {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    border: 0.5px solid rgba(242,242,242,0.2);
-    padding: 5px 12px;
-    border-radius: 2px;
-    opacity: 0.6;
-  }
-
-  .project-divider {
-    height: 0.5px;
-    background: var(--glass-border);
-    margin: 24px 0;
-  }
-
-  .project-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .meta-item .meta-label {
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    opacity: 0.3;
-    margin-bottom: 4px;
-  }
-
-  .meta-item .meta-val {
-    font-size: 12px;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    opacity: 0.8;
-  }
-
-  /* DOCK */
-  #dock {
-    position: fixed;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    padding: 10px 16px;
-    background: rgba(30,30,30,0.7);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 0.5px solid var(--glass-border);
-    border-radius: 18px;
-    z-index: 1000;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-
-  .dock-divider {
-    width: 0.5px;
-    height: 36px;
-    background: var(--glass-border);
-    margin: 0 4px;
-    align-self: center;
-  }
-
-  .dock-item {
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    background: rgba(255,255,255,0.06);
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-
-  .dock-item:hover {
-    transform: scale(1.35) translateY(-8px);
-  }
-
-  .dock-item .dock-tooltip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%; transform: translateX(-50%);
-    background: rgba(30,30,30,0.95);
-    border: 0.5px solid var(--glass-border);
-    color: var(--white);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    padding: 4px 10px;
-    border-radius: 6px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s;
-  }
-
-  .dock-item:hover .dock-tooltip { opacity: 1; }
-
-  .dock-item.dock-folder {
-    background: rgba(255,255,255,0.05);
-    border: 0.5px solid var(--glass-border);
-    font-size: 18px;
-  }
-
-  /* ABOUT WINDOW SPECIFICS */
-  .about-portrait {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 6px;
-    margin-bottom: 28px;
-    display: block;
-    background: rgba(255,255,255,0.04);
-  }
-
-  .about-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px;
-    font-weight: 300;
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-  }
-
-  .about-title {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    opacity: 0.4;
-    margin-bottom: 24px;
-  }
-
-  .about-bio {
-    font-size: 13px;
-    line-height: 1.9;
-    opacity: 0.6;
-    font-weight: 300;
-    letter-spacing: 0.02em;
-    margin-bottom: 28px;
-  }
-
-  .contact-line {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    opacity: 0.45;
-    text-transform: uppercase;
-    line-height: 2;
-  }
-
-  /* BOOT SCREEN */
-  #boot {
-    position: fixed; inset: 0;
-    background: var(--black);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    gap: 24px;
-    z-index: 9998;
-    transition: opacity 0.8s ease;
-  }
-
-  #boot.hidden { opacity: 0; pointer-events: none; }
-
-  .boot-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 300;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    opacity: 0;
-    animation: bootFade 1s ease 0.3s both;
-  }
-
-  @keyframes bootFade {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 0.7; transform: translateY(0); }
-  }
-
-  .boot-bar-wrap {
-    width: 120px;
-    height: 1px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 1px;
-    overflow: hidden;
-  }
-
-  .boot-bar {
-    height: 100%;
-    background: var(--white);
-    width: 0%;
-    border-radius: 1px;
-    animation: bootLoad 1.4s ease 0.5s both;
-  }
-
-  @keyframes bootLoad {
-    0% { width: 0%; }
-    60% { width: 75%; }
-    100% { width: 100%; }
-  }
-
-  /* SELECTION RECT */
-  #selection-rect {
-    position: absolute;
-    border: 0.5px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.04);
-    pointer-events: none;
-    z-index: 50;
-    display: none;
-  }
-
-  /* CONTEXT MENU */
-  #context-menu {
-    position: fixed;
-    background: rgba(25,25,25,0.95);
-    backdrop-filter: blur(20px);
-    border: 0.5px solid var(--glass-border);
-    border-radius: 8px;
-    padding: 6px 0;
-    z-index: 2000;
-    display: none;
-    min-width: 160px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-  }
-
-  .ctx-item {
-    padding: 7px 16px;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: background 0.1s;
-    opacity: 0.75;
-  }
-  .ctx-item:hover { background: rgba(255,255,255,0.07); opacity: 1; }
-  .ctx-sep { height: 0.5px; background: var(--glass-border); margin: 4px 0; }
-
-  /* STATUS TAG */
-  .status-badge {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 2px;
-    margin-bottom: 16px;
-  }
-  .status-production { background: rgba(255,189,46,0.12); color: #FFBD2E; border: 0.5px solid rgba(255,189,46,0.25); }
-  .status-complete { background: rgba(40,200,64,0.1); color: #28C840; border: 0.5px solid rgba(40,200,64,0.2); }
-  .status-ongoing { background: rgba(242,242,242,0.06); color: rgba(242,242,242,0.5); border: 0.5px solid var(--glass-border); }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#111111;--white:#F2F2F2;--glass:rgba(255,255,255,0.08);--glass-border:rgba(255,255,255,0.14);--shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 0.5px rgba(255,255,255,0.07) inset;--radius:12px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;}
+html,body{width:100%;height:100%;overflow:hidden;background:#1c1c1c;color:#f0f0f0;font-family:var(--font);user-select:none;cursor:default;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04;pointer-events:none;z-index:9999;}
+ 
+#bg{position:fixed;inset:0;background-image:url('bg.jpg');background-size:cover;background-position:center top;background-repeat:no-repeat;z-index:0;}
+#bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,0.3) 100%);}
+ 
+#menubar{position:fixed;top:0;left:0;right:0;height:28px;background:rgba(18,18,18,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;padding:0 16px;z-index:1000;gap:20px;}
+.menu-logo{font-size:13px;font-weight:600;color:#f0f0f0;}
+.menu-items{display:flex;gap:18px;margin-left:8px;}
+.menu-item{font-size:13px;font-weight:400;color:rgba(255,255,255,0.85);cursor:pointer;padding:2px 6px;border-radius:4px;}
+.menu-item:hover{background:rgba(255,255,255,0.1);}
+.menu-right{margin-left:auto;}
+.menu-time{font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);}
+ 
+#desktop{position:fixed;top:28px;bottom:82px;left:0;right:0;overflow:hidden;z-index:1;}
+ 
+.folder{position:absolute;width:88px;cursor:pointer;z-index:10;animation:fadeIn 0.5s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.88) translateY(6px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.folder:hover .folder-thumb{transform:scale(1.07);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.folder:active{transform:scale(0.96);}
+.folder-thumb{width:80px;height:68px;border-radius:10px;overflow:hidden;border:0.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);margin:0 auto 5px;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.folder-label{text-align:center;font-size:11px;font-weight:400;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.9);line-height:1.3;letter-spacing:0.01em;padding:0 2px;}
+ 
+.window{position:fixed;background:rgba(26,26,26,0.94);backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);border:0.5px solid rgba(255,255,255,0.14);border-radius:var(--radius);overflow:hidden;z-index:500;box-shadow:var(--shadow);display:none;min-width:280px;min-height:180px;}
+.window.active{display:flex;flex-direction:column;animation:winOpen 0.22s cubic-bezier(0.34,1.2,0.64,1) both;}
+@keyframes winOpen{from{opacity:0;transform:scale(0.94);}to{opacity:1;transform:scale(1);}}
+.window.fullscreen{top:28px!important;left:0!important;width:100vw!important;height:calc(100vh - 28px)!important;border-radius:0!important;}
+ 
+.titlebar{height:38px;background:rgba(36,36,36,0.97);border-bottom:0.5px solid rgba(255,255,255,0.09);display:flex;align-items:center;padding:0 12px;cursor:grab;flex-shrink:0;position:relative;}
+.titlebar:active{cursor:grabbing;}
+.traffic-lights{display:flex;gap:7px;}
+.tl{width:12px;height:12px;border-radius:50%;cursor:pointer;transition:filter 0.15s;}
+.tl:hover{filter:brightness(1.15);}
+.tl.close{background:#FF5F57;}
+.tl.min{background:#FFBD2E;}
+.tl.max{background:#28C840;}
+.win-title{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:500;color:rgba(255,255,255,0.6);white-space:nowrap;}
+ 
+.resize-handle{position:absolute;bottom:0;right:0;width:18px;height:18px;cursor:se-resize;z-index:20;}
+.resize-handle::before{content:'';position:absolute;right:3px;bottom:3px;width:9px;height:9px;border-right:2px solid rgba(255,255,255,0.2);border-bottom:2px solid rgba(255,255,255,0.2);}
+ 
+.win-body{flex:1;overflow-y:auto;overflow-x:hidden;}
+.win-body::-webkit-scrollbar{width:6px;}
+.win-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px;}
+ 
+/* CONTACT */
+.contact-photo-wrap{padding:24px 24px 16px;display:flex;gap:16px;align-items:flex-start;border-bottom:0.5px solid rgba(255,255,255,0.07);}
+.contact-photo{width:78px;height:78px;border-radius:50%;object-fit:cover;object-position:top center;flex-shrink:0;border:2px solid rgba(255,255,255,0.1);}
+.contact-photo-placeholder{width:78px;height:78px;border-radius:50%;background:rgba(74,144,226,0.3);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.contact-name{font-size:19px;font-weight:600;color:#fff;margin-bottom:2px;}
+.contact-role{font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:0;}
+.contact-section{padding:14px 24px;border-bottom:0.5px solid rgba(255,255,255,0.07);}
+.contact-section-title{font-size:11px;font-weight:600;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.contact-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.c-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.c-icon.email{background:#3a7bd5;}
+.c-icon.web{background:#6c3fc7;}
+.c-icon.phone{background:#2ecc71;}
+.contact-text{font-size:13px;color:rgba(255,255,255,0.65);}
+.contact-text a{color:#5aabff;text-decoration:none;}
+.contact-text a:hover{text-decoration:underline;}
+.contact-bio-text{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;}
+.map-wrap{width:100%;height:190px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);}
+.map-wrap iframe{width:100%;height:100%;border:none;filter:grayscale(1) brightness(0.55) contrast(1.1);}
+.contact-cta{display:block;margin:14px 24px 20px;padding:10px;background:rgba(74,144,226,0.18);border:0.5px solid rgba(74,144,226,0.35);border-radius:8px;text-align:center;font-size:13px;font-weight:500;color:#5aabff;cursor:pointer;text-decoration:none;transition:background 0.15s;}
+.contact-cta:hover{background:rgba(74,144,226,0.3);}
+ 
+/* NOTES */
+.notes-layout{display:flex;height:100%;flex:1;overflow:hidden;}
+.notes-sidebar{width:190px;flex-shrink:0;background:rgba(255,210,40,0.05);border-right:0.5px solid rgba(255,255,255,0.07);overflow-y:auto;}
+.notes-sidebar-hd{padding:12px 14px 6px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;}
+.note-item{padding:9px 14px;cursor:pointer;border-radius:7px;margin:2px 6px;}
+.note-item:hover{background:rgba(255,255,255,0.05);}
+.note-item.active{background:rgba(255,190,40,0.22);}
+.note-item-date{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:2px;}
+.note-item-preview{font-size:12px;color:rgba(255,255,255,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.notes-body{flex:1;padding:20px 22px;overflow-y:auto;}
+.notes-body h2{font-size:19px;font-weight:600;color:#fff;margin-bottom:14px;}
+.notes-body p{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.72;margin-bottom:11px;}
+.notes-body h3{font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.07em;margin:18px 0 7px;}
+.notes-body ul{padding-left:16px;margin-bottom:11px;}
+.notes-body li{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.72;margin-bottom:3px;}
+ 
+/* PROJECTS */
+.proj-pad{padding:26px;}
+.proj-placeholder{width:100%;height:210px;border-radius:8px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:22px;}
+.proj-cat{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:7px;}
+.proj-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:#fff;letter-spacing:0.04em;margin-bottom:14px;line-height:1.15;}
+.proj-desc{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.75;margin-bottom:18px;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+.tag{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;border:0.5px solid rgba(255,255,255,0.16);padding:4px 10px;border-radius:20px;color:rgba(255,255,255,0.5);}
+.proj-divider{height:0.5px;background:rgba(255,255,255,0.07);margin:18px 0;}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.meta-lbl{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:3px;}
+.meta-val{font-size:12px;color:rgba(255,255,255,0.72);}
+.badge{display:inline-block;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:13px;}
+.badge-prod{background:rgba(255,189,46,0.1);color:#FFBD2E;border:0.5px solid rgba(255,189,46,0.28);}
+.badge-active{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.42);border:0.5px solid rgba(255,255,255,0.1);}
+ 
+/* DOCK */
+#dock{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:8px;padding:8px 14px 10px;background:rgba(24,24,24,0.68);backdrop-filter:blur(36px);-webkit-backdrop-filter:blur(36px);border:0.5px solid rgba(255,255,255,0.18);border-radius:22px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,0.55),0 0 0 0.5px rgba(255,255,255,0.04) inset;}
+.dock-sep{width:0.5px;height:42px;background:rgba(255,255,255,0.22);margin:0 4px;align-self:center;}
+.dock-item{width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;flex-shrink:0;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);}
+.dock-item svg{width:52px;height:52px;border-radius:13px;}
+.dock-tooltip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.95);backdrop-filter:blur(10px);border:0.5px solid rgba(255,255,255,0.14);color:#fff;font-size:11px;font-weight:500;padding:4px 10px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.14s;}
+.dock-item:hover .dock-tooltip{opacity:1;}
+.dock-dot{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:4px;height:4px;background:rgba(255,255,255,0.65);border-radius:50%;display:none;}
+.dock-item.open .dock-dot{display:block;}
+ 
+/* BOOT */
+#boot{position:fixed;inset:0;background:#111;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:9998;transition:opacity 0.7s ease;}
+#boot.hidden{opacity:0;pointer-events:none;}
+.boot-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;letter-spacing:0.5em;text-transform:uppercase;color:rgba(255,255,255,0.55);animation:bf 1s ease 0.4s both;}
+@keyframes bf{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.boot-bar-wrap{width:96px;height:1px;background:rgba(255,255,255,0.1);border-radius:1px;overflow:hidden;}
+.boot-bar{height:100%;background:rgba(255,255,255,0.65);width:0;animation:bl 1.5s ease 0.6s both;}
+@keyframes bl{0%{width:0;}60%{width:72%;}100%{width:100%;}}
 </style>
 </head>
 <body>
-
-<!-- BOOT -->
+ 
 <div id="boot">
   <div class="boot-logo">Ashesh Arora Studios</div>
   <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
 </div>
-
-<!-- MENUBAR -->
+ 
+<div id="bg"></div>
+ 
 <div id="menubar">
   <span class="menu-logo">AAS</span>
   <div class="menu-items">
-    <span class="menu-item" onclick="openAbout()">About</span>
+    <span class="menu-item" onclick="openWin('win-contact')">About</span>
     <span class="menu-item" onclick="tileWindows()">View</span>
-    <span class="menu-item" onclick="closeAllWindows()">Close All</span>
+    <span class="menu-item" onclick="closeAll()">Close All</span>
   </div>
   <div class="menu-right">
     <span class="menu-time" id="clock"></span>
   </div>
 </div>
-
-<!-- DESKTOP -->
-<div id="desktop">
-  <div id="ambient">
-    <div class="studio-name">ASHESH ARORA STUDIOS</div>
+ 
+<div id="desktop"></div>
+ 
+<!-- CONTACT WINDOW -->
+<div class="window" id="win-contact" style="width:400px;">
+  <div class="titlebar" data-win="win-contact">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWin('win-contact')"></div>
+      <div class="tl min" onclick="minWin('win-contact')"></div>
+      <div class="tl max" onclick="toggleFull('win-contact')"></div>
+    </div>
+    <span class="win-title">Ashesh Arora</span>
   </div>
-  <div id="selection-rect"></div>
+  <div class="win-body">
+    <div class="contact-photo-wrap">
+      <img class="contact-photo" src="ashesh.jpg" onerror="this.outerHTML='<div class=\'contact-photo-placeholder\'>👤</div>'" alt="Ashesh Arora">
+      <div>
+        <div class="contact-name">Ashesh Arora</div>
+        <div class="contact-role">Creative Director · Ashesh Arora Studios</div>
+      </div>
+    </div>
+    <div class="contact-section">
+      <div class="contact-section-title">Contact</div>
+      <div class="contact-row">
+        <div class="c-icon email">✉</div>
+        <div class="contact-text"><a href="mailto:ashesh@ashesharorastudios.com">ashesh@ashesharorastudios.com</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="c-icon web">🌐</div>
+        <div class="contact-text"><a href="https://ashesharorastudios.com" target="_blank">ashesharorastudios.com</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="c-icon phone">📞</div>
+        <div class="contact-text">+1.647.395.2224</div>
+      </div>
+    </div>
+    <div class="contact-section">
+      <div class="contact-section-title">About</div>
+      <div class="contact-bio-text">Creative Director and founder of Ashesh Arora Studios — a purpose-driven production studio based in Brampton, Ontario. Operating at the intersection of AI filmmaking, brand identity, and visual storytelling. Two words: culture and connection.</div>
+    </div>
+    <div class="contact-section">
+      <div class="contact-section-title">Location</div>
+      <div class="map-wrap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d92610.18!2d-79.7624!3d43.7315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b15eaa5e0f05b%3A0xda1c4f47d7d7e7a3!2sBrampton%2C%20ON!5e0!3m2!1sen!2sca!4v1" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+    <a class="contact-cta" href="mailto:ashesh@ashesharorastudios.com">Contact me</a>
+  </div>
+  <div class="resize-handle"></div>
 </div>
-
+ 
+<!-- NOTES WINDOW -->
+<div class="window" id="win-notes" style="width:560px;height:420px;">
+  <div class="titlebar" data-win="win-notes">
+    <div class="traffic-lights">
+      <div class="tl close" onclick="closeWin('win-notes')"></div>
+      <div class="tl min" onclick="minWin('win-notes')"></div>
+      <div class="tl max" onclick="toggleFull('win-notes')"></div>
+    </div>
+    <span class="win-title">Notes</span>
+  </div>
+  <div class="win-body notes-layout">
+    <div class="notes-sidebar">
+      <div class="notes-sidebar-hd">Notes</div>
+      <div class="note-item active" onclick="showNote('about',this)">
+        <div class="note-item-date">About</div>
+        <div class="note-item-preview">Creative Director, AAS</div>
+      </div>
+      <div class="note-item" onclick="showNote('work',this)">
+        <div class="note-item-date">Work</div>
+        <div class="note-item-preview">Active projects 2026</div>
+      </div>
+      <div class="note-item" onclick="showNote('studio',this)">
+        <div class="note-item-date">Studio</div>
+        <div class="note-item-preview">What we do</div>
+      </div>
+    </div>
+    <div class="notes-body" id="notes-body">
+      <h2>About</h2>
+      <p>Ashesh Arora. Creative Director. Brampton, Ontario.</p>
+      <p>Founder of Ashesh Arora Studios — a purpose-driven creative production studio built at the intersection of AI filmmaking, brand identity, and visual storytelling. Not a content agency. Not a freelancer. A studio.</p>
+      <p>Two words: culture and connection.</p>
+      <h3>Background</h3>
+      <p>Brand photography, creative direction, campaign strategy, AI film production. Working with startups, premium brands, and multicultural communities across the GTA and beyond.</p>
+      <h3>Contact</h3>
+      <p>ashesh@ashesharorastudios.com · +1.647.395.2224 · 8 Nelson St W, Brampton ON</p>
+    </div>
+  </div>
+  <div class="resize-handle"></div>
+</div>
+ 
 <!-- PROJECT WINDOWS -->
-<div class="window" id="win-tib" data-title="This Is Brampton">
-  <div class="window-titlebar">
+<div class="window" id="win-tib" style="width:620px;">
+  <div class="titlebar" data-win="win-tib">
     <div class="traffic-lights">
-      <div class="tl close" onclick="closeWindow('win-tib')"></div>
-      <div class="tl min"></div>
-      <div class="tl max"></div>
+      <div class="tl close" onclick="closeWin('win-tib')"></div>
+      <div class="tl min" onclick="minWin('win-tib')"></div>
+      <div class="tl max" onclick="toggleFull('win-tib')"></div>
     </div>
-    <div class="window-title">This Is Brampton</div>
-    <div style="width:42px"></div>
+    <span class="win-title">This Is Brampton</span>
   </div>
-  <div class="window-body">
-    <div class="project-hero-placeholder">Film Still — In Production</div>
-    <div class="status-badge status-production">In Post-Production · 2026</div>
-    <div class="project-category">AI Film · Short Film</div>
-    <div class="project-title">This Is Brampton</div>
-    <div class="project-desc">Seven stories. One city. Told in wool and light.<br><br>Brampton isn't one story — it's seven happening at once. An AI-powered stop-motion short film following seven residents of one of Canada's most culturally dense cities, each carrying a world within them. Built entirely in AI, rendered in the tactile language of wool felt and stop-motion.</div>
-    <div class="project-tags">
-      <span class="tag">AI Film</span>
-      <span class="tag">Stop Motion</span>
-      <span class="tag">Wool Felt</span>
-      <span class="tag">Sora 2 Pro</span>
-      <span class="tag">Kling</span>
+  <div class="win-body"><div class="proj-pad">
+    <div class="proj-placeholder">Film Still — In Production</div>
+    <div class="badge badge-prod">In Post-Production · 2026</div>
+    <div class="proj-cat">AI Film · Short Film</div>
+    <div class="proj-title">This Is Brampton</div>
+    <div class="proj-desc">Seven stories. One city. Told in wool and light.<br><br>An AI-powered stop-motion short film following seven residents of one of Canada's most culturally dense cities. Built entirely in AI, rendered in the tactile language of wool felt and stop-motion.</div>
+    <div class="proj-tags"><span class="tag">AI Film</span><span class="tag">Stop Motion</span><span class="tag">Wool Felt</span><span class="tag">Sora 2 Pro</span><span class="tag">Kling</span></div>
+    <div class="proj-divider"></div>
+    <div class="meta-grid">
+      <div><div class="meta-lbl">Characters</div><div class="meta-val">Harbhajan · Priya · Marcus · Amara · Rina · Jordan · Claire</div></div>
+      <div><div class="meta-lbl">Format</div><div class="meta-val">AI Stop-Motion Short</div></div>
+      <div><div class="meta-lbl">City</div><div class="meta-val">Brampton, Ontario</div></div>
+      <div><div class="meta-lbl">Studio</div><div class="meta-val">Ashesh Arora Studios</div></div>
     </div>
-    <div class="project-divider"></div>
-    <div class="project-meta">
-      <div class="meta-item"><div class="meta-label">Characters</div><div class="meta-val">Harbhajan · Priya · Marcus · Amara · Rina · Jordan · Claire</div></div>
-      <div class="meta-item"><div class="meta-label">Studio</div><div class="meta-val">Ashesh Arora Studios</div></div>
-      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-val">AI Stop-Motion Short</div></div>
-      <div class="meta-item"><div class="meta-label">City</div><div class="meta-val">Brampton, Ontario</div></div>
-    </div>
-  </div>
+  </div></div>
+  <div class="resize-handle"></div>
 </div>
-
-<div class="window" id="win-chatorey" data-title="Chatorey">
-  <div class="window-titlebar">
+ 
+<div class="window" id="win-chatorey" style="width:620px;">
+  <div class="titlebar" data-win="win-chatorey">
     <div class="traffic-lights">
-      <div class="tl close" onclick="closeWindow('win-chatorey')"></div>
-      <div class="tl min"></div>
-      <div class="tl max"></div>
+      <div class="tl close" onclick="closeWin('win-chatorey')"></div>
+      <div class="tl min" onclick="minWin('win-chatorey')"></div>
+      <div class="tl max" onclick="toggleFull('win-chatorey')"></div>
     </div>
-    <div class="window-title">Chatorey</div>
-    <div style="width:42px"></div>
+    <span class="win-title">Chatorey</span>
   </div>
-  <div class="window-body">
-    <div class="project-hero-placeholder">Chatorey — Photography & Rebrand</div>
-    <div class="status-badge status-ongoing">Active Client · 2026</div>
-    <div class="project-category">Brand · Photography · Packaging</div>
-    <div class="project-title">Chatorey</div>
-    <div class="project-desc">A bold Indian street food brand based in Scarborough. They came with a brand identity and needed it brought to life — visually, consistently, and at a level that would stop the scroll.<br><br>Full menu photography shoot. Branded social content. Brand packaging direction. Art direction. Staff uniform system. Monthly artwork rotation for the dining space interior.</div>
-    <div class="project-tags">
-      <span class="tag">Rebrand</span>
-      <span class="tag">Photography</span>
-      <span class="tag">Packaging</span>
-      <span class="tag">Art Direction</span>
-      <span class="tag">Zine</span>
+  <div class="win-body"><div class="proj-pad">
+    <div class="proj-placeholder">Chatorey — Photography & Rebrand</div>
+    <div class="badge badge-active">Active Client · 2026</div>
+    <div class="proj-cat">Brand · Photography · Packaging</div>
+    <div class="proj-title">Chatorey</div>
+    <div class="proj-desc">A bold Indian street food brand based in Scarborough. Full menu photography shoot, branded social content, packaging direction, staff uniform system, and monthly artwork rotation for the dining interior.</div>
+    <div class="proj-tags"><span class="tag">Rebrand</span><span class="tag">Photography</span><span class="tag">Packaging</span><span class="tag">Art Direction</span></div>
+    <div class="proj-divider"></div>
+    <div class="meta-grid">
+      <div><div class="meta-lbl">Deliverables</div><div class="meta-val">Photography · Packaging · Zine · Uniforms</div></div>
+      <div><div class="meta-lbl">Location</div><div class="meta-val">Scarborough, Ontario</div></div>
     </div>
-    <div class="project-divider"></div>
-    <div class="project-meta">
-      <div class="meta-item"><div class="meta-label">Deliverables</div><div class="meta-val">Photography · Packaging · Zine · Uniforms</div></div>
-      <div class="meta-item"><div class="meta-label">Location</div><div class="meta-val">Scarborough, Ontario</div></div>
-      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Food & Hospitality</div></div>
-      <div class="meta-item"><div class="meta-label">Year</div><div class="meta-val">2026</div></div>
-    </div>
-  </div>
+  </div></div>
+  <div class="resize-handle"></div>
 </div>
-
-<div class="window" id="win-pcoc" data-title="Belong — PCOC">
-  <div class="window-titlebar">
+ 
+<div class="window" id="win-pcoc" style="width:620px;">
+  <div class="titlebar" data-win="win-pcoc">
     <div class="traffic-lights">
-      <div class="tl close" onclick="closeWindow('win-pcoc')"></div>
-      <div class="tl min"></div>
-      <div class="tl max"></div>
+      <div class="tl close" onclick="closeWin('win-pcoc')"></div>
+      <div class="tl min" onclick="minWin('win-pcoc')"></div>
+      <div class="tl max" onclick="toggleFull('win-pcoc')"></div>
     </div>
-    <div class="window-title">Belong — PCOC Gala 2026</div>
-    <div style="width:42px"></div>
+    <span class="win-title">Belong — PCOC</span>
   </div>
-  <div class="window-body">
-    <div class="project-hero-placeholder">Belong · Campaign Visual</div>
-    <div class="status-badge status-production">Commission · May 2026</div>
-    <div class="project-category">Film · Campaign · Installation</div>
-    <div class="project-title">Belong</div>
-    <div class="project-desc">A commission for the Punjabi Chamber of Commerce Gala, May 2, 2026. A centrepiece short film and ambient loop installation built around one word — Belong.<br><br>Four creative pillars: Seen. Belonged. Culture. Ambition. The work explores what it means to find yourself in a city, a community, a moment.</div>
-    <div class="project-tags">
-      <span class="tag">Short Film</span>
-      <span class="tag">Installation</span>
-      <span class="tag">Campaign</span>
-      <span class="tag">PCOC</span>
+  <div class="win-body"><div class="proj-pad">
+    <div class="proj-placeholder">Belong · Campaign Visual</div>
+    <div class="badge badge-prod">Commission · May 2026</div>
+    <div class="proj-cat">Film · Campaign · Installation</div>
+    <div class="proj-title">Belong</div>
+    <div class="proj-desc">A commission for the Punjabi Chamber of Commerce Gala, May 2, 2026. A centrepiece short film and ambient loop installation built around one word — Belong.</div>
+    <div class="proj-tags"><span class="tag">Short Film</span><span class="tag">Installation</span><span class="tag">PCOC</span></div>
+    <div class="proj-divider"></div>
+    <div class="meta-grid">
+      <div><div class="meta-lbl">Client</div><div class="meta-val">Punjabi Chamber of Commerce</div></div>
+      <div><div class="meta-lbl">Event</div><div class="meta-val">May 2, 2026 — Gala</div></div>
     </div>
-    <div class="project-divider"></div>
-    <div class="project-meta">
-      <div class="meta-item"><div class="meta-label">Client</div><div class="meta-val">Punjabi Chamber of Commerce</div></div>
-      <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-val">Belong</div></div>
-      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-val">Film + Ambient Loop</div></div>
-      <div class="meta-item"><div class="meta-label">Event</div><div class="meta-val">May 2, 2026 — Gala</div></div>
-    </div>
-  </div>
+  </div></div>
+  <div class="resize-handle"></div>
 </div>
-
-<div class="window" id="win-transformation" data-title="Transformation">
-  <div class="window-titlebar">
+ 
+<div class="window" id="win-transformation" style="width:620px;">
+  <div class="titlebar" data-win="win-transformation">
     <div class="traffic-lights">
-      <div class="tl close" onclick="closeWindow('win-transformation')"></div>
-      <div class="tl min"></div>
-      <div class="tl max"></div>
+      <div class="tl close" onclick="closeWin('win-transformation')"></div>
+      <div class="tl min" onclick="minWin('win-transformation')"></div>
+      <div class="tl max" onclick="toggleFull('win-transformation')"></div>
     </div>
-    <div class="window-title">Transformation</div>
-    <div style="width:42px"></div>
+    <span class="win-title">Transformation</span>
   </div>
-  <div class="window-body">
-    <div class="project-hero-placeholder">Transformation — Personal Series</div>
-    <div class="status-badge status-production">In Production · 2026</div>
-    <div class="project-category">Personal Work · AI Film Series</div>
-    <div class="project-title">Transformation</div>
-    <div class="project-desc">A personal AI-generated visual art project. Five acts exploring identity, energy, and emergence through afrofuturist sci-fi — grounded and tactile.<br><br>The Burning · The Call · The Pull · The Crown · Kundalini.</div>
-    <div class="project-tags">
-      <span class="tag">Personal</span>
-      <span class="tag">AI Film</span>
-      <span class="tag">Afrofuturist</span>
-      <span class="tag">Five Acts</span>
+  <div class="win-body"><div class="proj-pad">
+    <div class="proj-placeholder">Transformation — Personal Series</div>
+    <div class="badge badge-prod">In Production · 2026</div>
+    <div class="proj-cat">Personal Work · AI Film Series</div>
+    <div class="proj-title">Transformation</div>
+    <div class="proj-desc">A personal AI-generated visual art project. Five acts exploring identity, energy, and emergence through afrofuturist sci-fi.<br><br>The Burning · The Call · The Pull · The Crown · Kundalini.</div>
+    <div class="proj-tags"><span class="tag">Personal</span><span class="tag">AI Film</span><span class="tag">Five Acts</span></div>
+    <div class="proj-divider"></div>
+    <div class="meta-grid">
+      <div><div class="meta-lbl">Subject</div><div class="meta-val">Ashesh Arora</div></div>
+      <div><div class="meta-lbl">Tools</div><div class="meta-val">Kling · Flow · Adobe · Suno</div></div>
     </div>
-    <div class="project-divider"></div>
-    <div class="project-meta">
-      <div class="meta-item"><div class="meta-label">Acts</div><div class="meta-val">The Burning · The Call · The Pull · The Crown · Kundalini</div></div>
-      <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-val">Kling · Flow · Adobe · Suno</div></div>
-      <div class="meta-item"><div class="meta-label">Subject</div><div class="meta-val">Ashesh Arora</div></div>
-      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Personal IP</div></div>
-    </div>
-  </div>
+  </div></div>
+  <div class="resize-handle"></div>
 </div>
-
-<div class="window" id="win-about" data-title="About">
-  <div class="window-titlebar">
-    <div class="traffic-lights">
-      <div class="tl close" onclick="closeWindow('win-about')"></div>
-      <div class="tl min"></div>
-      <div class="tl max"></div>
-    </div>
-    <div class="window-title">Ashesh Arora</div>
-    <div style="width:42px"></div>
-  </div>
-  <div class="window-body">
-    <div class="project-hero-placeholder">Portrait</div>
-    <div class="about-name">Ashesh Arora</div>
-    <div class="about-title">Creative Director · Brampton, Ontario</div>
-    <div class="about-bio">Ashesh Arora Studios is a purpose-driven creative production studio operating at the intersection of storytelling and brand identity. AI-powered filmmaking, visual campaigns, brand strategy, creative direction, photography.<br><br>A full end-to-end creative production house. Not a content agency. Not a freelancer. A studio built on two words: culture and connection.</div>
-    <div class="project-divider"></div>
-    <div class="contact-line">
-      ashesh@ashesharorastudios.com<br>
-      ashesharorastudios.com<br>
-      +1.647.395.2224<br>
-      8 Nelson St W, Brampton ON
-    </div>
-  </div>
-</div>
-
+ 
 <!-- DOCK -->
 <div id="dock">
-  <div class="dock-item dock-folder" onclick="openWindow('win-tib')" title="TIB">
-    🎬
-    <div class="dock-tooltip">This Is Brampton</div>
+  <div class="dock-item" id="di-contact" onclick="openWin('win-contact')">
+    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5BA4F5"/><stop offset="100%" stop-color="#2C6FD1"/></linearGradient></defs>
+      <rect width="52" height="52" rx="13" fill="url(#cg)"/>
+      <circle cx="26" cy="20" r="9" fill="rgba(255,255,255,0.92)"/>
+      <path d="M8 46 Q8 34 26 34 Q44 34 44 46" fill="rgba(255,255,255,0.92)"/>
+    </svg>
+    <div class="dock-tooltip">Ashesh Arora</div>
+    <div class="dock-dot"></div>
   </div>
-  <div class="dock-item dock-folder" onclick="openWindow('win-chatorey')">
-    🌶️
-    <div class="dock-tooltip">Chatorey</div>
+  <div class="dock-item" id="di-notes" onclick="openWin('win-notes')">
+    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="ng" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFE84D"/><stop offset="100%" stop-color="#F0A800"/></linearGradient></defs>
+      <rect width="52" height="52" rx="13" fill="url(#ng)"/>
+      <rect x="11" y="11" width="30" height="30" rx="5" fill="rgba(255,255,255,0.96)"/>
+      <line x1="17" y1="20" x2="35" y2="20" stroke="#C8960A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="17" y1="26" x2="35" y2="26" stroke="#C8960A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="17" y1="32" x2="28" y2="32" stroke="#C8960A" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div class="dock-tooltip">Notes</div>
+    <div class="dock-dot"></div>
   </div>
-  <div class="dock-item dock-folder" onclick="openWindow('win-pcoc')">
-    🎭
-    <div class="dock-tooltip">Belong — PCOC</div>
-  </div>
-  <div class="dock-item dock-folder" onclick="openWindow('win-transformation')">
-    ✦
-    <div class="dock-tooltip">Transformation</div>
-  </div>
-  <div class="dock-divider"></div>
-  <div class="dock-item" onclick="openAbout()">
-    👤
-    <div class="dock-tooltip">About</div>
-  </div>
-  <div class="dock-item" onclick="window.open('mailto:ashesh@ashesharorastudios.com')">
-    ✉️
-    <div class="dock-tooltip">Contact</div>
-  </div>
-  <div class="dock-item" onclick="window.open('https://instagram.com')">
-    📷
+  <div class="dock-sep"></div>
+  <div class="dock-item" onclick="window.open('https://instagram.com/ashesharorastudios','_blank')">
+    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ig" cx="30%" cy="107%" r="130%">
+          <stop offset="0%" stop-color="#fdf497"/>
+          <stop offset="45%" stop-color="#fd5949"/>
+          <stop offset="60%" stop-color="#d6249f"/>
+          <stop offset="90%" stop-color="#285AEB"/>
+        </radialGradient>
+      </defs>
+      <rect width="52" height="52" rx="13" fill="url(#ig)"/>
+      <rect x="13" y="13" width="26" height="26" rx="7" fill="none" stroke="white" stroke-width="2.5"/>
+      <circle cx="26" cy="26" r="7" fill="none" stroke="white" stroke-width="2.5"/>
+      <circle cx="34.5" cy="17.5" r="1.8" fill="white"/>
+    </svg>
     <div class="dock-tooltip">Instagram</div>
   </div>
+  <div class="dock-item" onclick="window.open('https://www.linkedin.com/in/ashesh-arora-8498ab277','_blank')">
+    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <rect width="52" height="52" rx="13" fill="#0A66C2"/>
+      <rect x="12" y="22" width="5" height="18" rx="1" fill="white"/>
+      <circle cx="14.5" cy="17" r="3" fill="white"/>
+      <rect x="21" y="22" width="5" height="18" rx="1" fill="white"/>
+      <path d="M26 28 Q26 20 33 20 Q40 20 40 28 L40 40 L35 40 L35 29 Q35 25 32 25 Q29 25 29 29 L29 40 L24 40 L24 22 L26 22 Z" fill="white"/>
+    </svg>
+    <div class="dock-tooltip">LinkedIn</div>
+  </div>
+  <div class="dock-item" onclick="window.open('https://www.youtube.com/@AsheshAroraStudios','_blank')">
+    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <rect width="52" height="52" rx="13" fill="#FF0000"/>
+      <rect x="8" y="16" width="36" height="20" rx="6" fill="white"/>
+      <polygon points="22,20 22,32 34,26" fill="#FF0000"/>
+    </svg>
+    <div class="dock-tooltip">YouTube</div>
+  </div>
 </div>
-
-<!-- CONTEXT MENU -->
-<div id="context-menu">
-  <div class="ctx-item" onclick="openAllProjects()">Open All Projects</div>
-  <div class="ctx-item" onclick="tileWindows()">Arrange Windows</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-item" onclick="openAbout()">About Ashesh Arora Studios</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-item" onclick="closeAllWindows()">Close All</div>
-</div>
-
+ 
 <script>
-// ── CLOCK ──────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {
-    hour: 'numeric', minute: '2-digit', hour12: true
-  });
-}
-updateClock(); setInterval(updateClock, 1000);
-
-// ── BOOT ───────────────────────────────────────────────
-setTimeout(() => {
+// CLOCK
+function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
+tick();setInterval(tick,1000);
+ 
+// BOOT
+setTimeout(()=>{
   document.getElementById('boot').classList.add('hidden');
-  setTimeout(() => {
-    document.getElementById('boot').remove();
-    spawnFolders();
-  }, 800);
-}, 2200);
-
-// ── FOLDERS ────────────────────────────────────────────
-const projects = [
-  { id: 'win-tib', label: 'This Is\nBrampton', emoji: '🎬', delay: 0 },
-  { id: 'win-chatorey', label: 'Chatorey', emoji: '🌶️', delay: 80 },
-  { id: 'win-pcoc', label: 'Belong\nPCOC', emoji: '🎭', delay: 160 },
-  { id: 'win-transformation', label: 'Transfor-\nmation', emoji: '✦', delay: 240 },
+  setTimeout(()=>{document.getElementById('boot').remove();spawnFolders();},700);
+},2400);
+ 
+// FOLDERS
+const projects=[
+  {id:'win-tib',label:'This Is\nBrampton',emoji:'🎬',delay:0},
+  {id:'win-chatorey',label:'Chatorey',emoji:'🌶️',delay:80},
+  {id:'win-pcoc',label:'Belong\nPCOC',emoji:'🎭',delay:160},
+  {id:'win-transformation',label:'Transformation',emoji:'✦',delay:240},
 ];
-
-const positions = [
-  { x: 60, y: 60 },
-  { x: 180, y: 120 },
-  { x: 80, y: 260 },
-  { x: 200, y: 340 },
-];
-
-function spawnFolders() {
-  const desktop = document.getElementById('desktop');
-  projects.forEach((p, i) => {
-    const folder = document.createElement('div');
-    folder.className = 'folder';
-    folder.id = 'folder-' + p.id;
-    folder.style.left = positions[i].x + 'px';
-    folder.style.top = positions[i].y + 'px';
-    folder.style.animationDelay = p.delay + 'ms';
-    folder.innerHTML = `
-      <div class="folder-icon">
-        <div class="folder-tab"></div>
-        <div class="folder-thumb">
-          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px;background:rgba(255,255,255,0.03);">${p.emoji}</div>
-        </div>
-      </div>
-      <div class="folder-label">${p.label}</div>
-    `;
-    folder.addEventListener('dblclick', () => openWindow(p.id));
-    desktop.appendChild(folder);
-    makeDraggable(folder);
+const positions=[{x:80,y:60},{x:210,y:110},{x:85,y:270},{x:215,y:350}];
+ 
+function spawnFolders(){
+  const desk=document.getElementById('desktop');
+  projects.forEach((p,i)=>{
+    const f=document.createElement('div');
+    f.className='folder';f.id='f-'+p.id;
+    f.style.left=positions[i].x+'px';
+    f.style.top=positions[i].y+'px';
+    f.style.animationDelay=p.delay+'ms';
+    f.innerHTML=`<div class="folder-thumb"><div style="font-size:24px;opacity:0.5">${p.emoji}</div></div><div class="folder-label">${p.label}</div>`;
+    f.addEventListener('dblclick',()=>openWin(p.id));
+    desk.appendChild(f);
+    makeDrag(f);
   });
 }
-
-// ── WINDOW MANAGEMENT ──────────────────────────────────
-let zTop = 500;
-
-function openWindow(id) {
-  const win = document.getElementById(id);
-  if (!win) return;
-  win.classList.add('active', 'focused');
-  bringToFront(win);
-
-  // Center if first open
-  if (!win.dataset.positioned) {
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const w = Math.min(680, vw - 40);
-    const h = 500;
-    win.style.left = Math.max(20, (vw - w) / 2 + (Math.random() * 60 - 30)) + 'px';
-    win.style.top = Math.max(48, (vh - h) / 2 + (Math.random() * 40 - 20)) + 'px';
-    win.style.width = w + 'px';
-    win.dataset.positioned = '1';
+ 
+// WINDOW SYSTEM
+let zTop=500;
+function openWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.classList.add('active');w.classList.remove('minimized');
+  bringFront(w);
+  if(!w.dataset.pos){
+    const vw=window.innerWidth,vh=window.innerHeight;
+    const wr=parseInt(w.style.width)||600;
+    w.style.left=Math.max(20,(vw-wr)/2+(Math.random()*50-25))+'px';
+    w.style.top=Math.max(48,(vh-480)/2+(Math.random()*40-20))+'px';
+    w.dataset.pos='1';
   }
-
-  makeDraggable(win, '.window-titlebar');
-  win.addEventListener('mousedown', () => bringToFront(win));
+  makeDrag(w,'.titlebar');
+  makeResize(w);
+  w.addEventListener('mousedown',()=>bringFront(w));
+  const di=document.getElementById('di-'+id.replace('win-',''));
+  if(di)di.classList.add('open');
 }
-
-function closeWindow(id) {
-  const win = document.getElementById(id);
-  if (win) {
-    win.style.transform = 'scale(0.9)';
-    win.style.opacity = '0';
-    win.style.transition = 'all 0.18s ease';
-    setTimeout(() => {
-      win.classList.remove('active', 'focused');
-      win.style.transform = '';
-      win.style.opacity = '';
-      win.style.transition = '';
-    }, 180);
+function closeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.style.transform='scale(0.92)';w.style.opacity='0';w.style.transition='all 0.16s ease';
+  setTimeout(()=>{
+    w.classList.remove('active');
+    w.style.cssText=w.style.cssText.replace('transform: scale(0.92);','').replace('opacity: 0;','').replace('transition: all 0.16s ease;','');
+    w.style.transform='';w.style.opacity='';w.style.transition='';
+  },160);
+  const di=document.getElementById('di-'+id.replace('win-',''));
+  if(di)di.classList.remove('open');
+}
+function minWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.style.transform='scale(0.5) translateY(200px)';w.style.opacity='0';w.style.transition='all 0.2s ease';
+  setTimeout(()=>{w.classList.remove('active');w.classList.add('minimized');w.style.transform='';w.style.opacity='';w.style.transition='';},200);
+}
+function toggleFull(id){
+  const w=document.getElementById(id);if(!w)return;
+  if(w.classList.contains('fullscreen')){
+    w.classList.remove('fullscreen');
+    if(w._prev)Object.assign(w.style,w._prev);
+  } else {
+    w._prev={top:w.style.top,left:w.style.left,width:w.style.width,height:w.style.height||''};
+    w.classList.add('fullscreen');
   }
 }
-
-function bringToFront(win) {
-  zTop++;
-  win.style.zIndex = zTop;
-  document.querySelectorAll('.window').forEach(w => w.classList.remove('focused'));
-  win.classList.add('focused');
-}
-
-function openAbout() { openWindow('win-about'); }
-
-function closeAllWindows() {
-  document.querySelectorAll('.window.active').forEach(w => closeWindow(w.id));
-}
-
-function openAllProjects() {
-  projects.forEach((p, i) => {
-    setTimeout(() => openWindow(p.id), i * 80);
+function bringFront(w){zTop++;w.style.zIndex=zTop;}
+function closeAll(){document.querySelectorAll('.window.active').forEach(w=>closeWin(w.id));}
+function tileWindows(){
+  const active=Array.from(document.querySelectorAll('.window.active'));
+  if(!active.length)return;
+  const cols=Math.ceil(Math.sqrt(active.length));
+  const rows=Math.ceil(active.length/cols);
+  const vw=window.innerWidth,vh=window.innerHeight-110;
+  active.forEach((win,i)=>{
+    const col=i%cols,row=Math.floor(i/cols);
+    const w=Math.floor(vw/cols)-12,h=Math.floor(vh/rows)-12;
+    win.style.left=(col*(w+12)+6)+'px';
+    win.style.top=(row*(h+12)+36)+'px';
+    win.style.width=w+'px';
+    win.style.height=h+'px';
+    win.style.transition='all 0.28s cubic-bezier(0.4,0,0.2,1)';
+    setTimeout(()=>win.style.transition='',300);
   });
 }
-
-function tileWindows() {
-  const active = Array.from(document.querySelectorAll('.window.active'));
-  if (!active.length) return;
-  const cols = Math.ceil(Math.sqrt(active.length));
-  const rows = Math.ceil(active.length / cols);
-  const vw = window.innerWidth, vh = window.innerHeight - 108;
-  const w = Math.floor(vw / cols) - 16;
-  const h = Math.floor(vh / rows) - 16;
-  active.forEach((win, i) => {
-    const col = i % cols, row = Math.floor(i / cols);
-    win.style.left = (col * (w + 16) + 8) + 'px';
-    win.style.top = (row * (h + 16) + 36) + 'px';
-    win.style.width = w + 'px';
-    win.style.transition = 'all 0.3s cubic-bezier(0.4,0,0.2,1)';
-    setTimeout(() => win.style.transition = '', 300);
-  });
-}
-
-// ── DRAG ───────────────────────────────────────────────
-function makeDraggable(el, handleSelector) {
-  const handle = handleSelector ? el.querySelector(handleSelector) : el;
-  if (!handle || handle._draggable) return;
-  handle._draggable = true;
-
-  let startX, startY, startL, startT;
-
-  handle.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
-    if (e.target.classList.contains('tl')) return;
+ 
+// DRAG
+function makeDrag(el,sel){
+  const h=sel?el.querySelector(sel):el;
+  if(!h||h._drag)return;h._drag=true;
+  let sx,sy,sl,st;
+  h.addEventListener('mousedown',e=>{
+    if(e.button!==0||e.target.classList.contains('tl')||e.target.classList.contains('resize-handle'))return;
     e.preventDefault();
-
-    startX = e.clientX; startY = e.clientY;
-    const rect = el.getBoundingClientRect();
-    const parent = el.parentElement || document.body;
-    const pr = parent.getBoundingClientRect ? parent.getBoundingClientRect() : { left: 0, top: 0 };
-    startL = rect.left - pr.left;
-    startT = rect.top - pr.top;
-
-    if (el.classList.contains('window')) bringToFront(el);
-
-    const move = e2 => {
-      const dx = e2.clientX - startX, dy = e2.clientY - startY;
-      el.style.left = (startL + dx) + 'px';
-      el.style.top = Math.max(28, startT + dy) + 'px';
-    };
-    const up = () => {
-      document.removeEventListener('mousemove', move);
-      document.removeEventListener('mouseup', up);
-    };
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', up);
+    sx=e.clientX;sy=e.clientY;
+    const r=el.getBoundingClientRect();sl=r.left;st=r.top;
+    if(el.classList.contains('window'))bringFront(el);
+    const mv=e2=>{el.style.left=(sl+e2.clientX-sx)+'px';el.style.top=Math.max(28,st+e2.clientY-sy)+'px';};
+    const up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);};
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
   });
 }
-
-// ── CONTEXT MENU ───────────────────────────────────────
-const ctxMenu = document.getElementById('context-menu');
-
-document.getElementById('desktop').addEventListener('contextmenu', e => {
-  e.preventDefault();
-  ctxMenu.style.display = 'block';
-  ctxMenu.style.left = Math.min(e.clientX, window.innerWidth - 180) + 'px';
-  ctxMenu.style.top = Math.min(e.clientY, window.innerHeight - 160) + 'px';
-});
-
-document.addEventListener('click', () => { ctxMenu.style.display = 'none'; });
-document.addEventListener('contextmenu', e => {
-  if (!e.target.closest('#desktop')) ctxMenu.style.display = 'none';
-});
-
-// ── DOCK MAGNIFICATION ─────────────────────────────────
-const dockItems = document.querySelectorAll('.dock-item');
-document.getElementById('dock').addEventListener('mousemove', e => {
-  dockItems.forEach(item => {
-    const rect = item.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const dist = Math.abs(e.clientX - cx);
-    const max = 80;
-    const scale = dist < max ? 1 + (1 - dist / max) * 0.5 : 1;
-    const lift = dist < max ? -(1 - dist / max) * 12 : 0;
-    item.style.transform = `scale(${scale}) translateY(${lift}px)`;
+ 
+// RESIZE
+function makeResize(el){
+  const h=el.querySelector('.resize-handle');
+  if(!h||h._resize)return;h._resize=true;
+  let sx,sy,sw,sh;
+  h.addEventListener('mousedown',e=>{
+    e.preventDefault();e.stopPropagation();
+    sx=e.clientX;sy=e.clientY;sw=el.offsetWidth;sh=el.offsetHeight;
+    const mv=e2=>{
+      el.style.width=Math.max(280,sw+e2.clientX-sx)+'px';
+      el.style.height=Math.max(180,sh+e2.clientY-sy)+'px';
+    };
+    const up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);};
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
+  });
+}
+ 
+// NOTES
+const noteData={
+  about:`<h2>About</h2><p>Ashesh Arora. Creative Director. Brampton, Ontario.</p><p>Founder of Ashesh Arora Studios — a purpose-driven creative production studio built at the intersection of AI filmmaking, brand identity, and visual storytelling. Not a content agency. Not a freelancer. A studio.</p><p>Two words: culture and connection.</p><h3>Background</h3><p>Brand photography, creative direction, campaign strategy, AI film production. Working with startups, premium brands, and multicultural communities across the GTA and beyond.</p><h3>Contact</h3><p>ashesh@ashesharorastudios.com · +1.647.395.2224 · 8 Nelson St W, Brampton ON</p>`,
+  work:`<h2>Active Projects</h2><h3>2026</h3><ul><li><strong>This Is Brampton</strong> — AI stop-motion short film. Wool felt characters. Seven stories. Post-production.</li><li><strong>Chatorey</strong> — Full rebrand, photography, packaging for Scarborough Indian street food brand.</li><li><strong>Belong</strong> — Commission for PCOC Gala, May 2. Short film + ambient loop installation.</li><li><strong>Transformation</strong> — Personal AI film series. Five acts. Afrofuturist sci-fi.</li></ul>`,
+  studio:`<h2>Studio</h2><p>Ashesh Arora Studios is a full end-to-end creative production company. Not a vendor. A creative director-led practice where story is always the priority.</p><h3>What We Do</h3><ul><li>AI-powered filmmaking</li><li>Brand identity & visual strategy</li><li>Photography & creative direction</li><li>Campaign development</li><li>Packaging & print direction</li></ul><h3>Values</h3><p>Culture and connection. Every project gets its own identity. Visuals do the talking.</p>`
+};
+function showNote(key,el){
+  document.getElementById('notes-body').innerHTML=noteData[key];
+  document.querySelectorAll('.note-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+}
+ 
+// DOCK MAGNIFICATION
+const dockEl=document.getElementById('dock');
+const dockItems=document.querySelectorAll('.dock-item');
+dockEl.addEventListener('mousemove',e=>{
+  dockItems.forEach(item=>{
+    const r=item.getBoundingClientRect();
+    const cx=r.left+r.width/2;
+    const dist=Math.abs(e.clientX-cx);
+    const max=90;
+    const scale=dist<max?1+(1-dist/max)*0.42:1;
+    const lift=dist<max?-(1-dist/max)*14:0;
+    item.style.transform=`scale(${scale}) translateY(${lift}px)`;
   });
 });
-
-document.getElementById('dock').addEventListener('mouseleave', () => {
-  dockItems.forEach(item => {
-    item.style.transform = '';
-  });
+dockEl.addEventListener('mouseleave',()=>{
+  dockItems.forEach(item=>item.style.transform='');
 });
+ 
+document.getElementById('desktop').addEventListener('contextmenu',e=>e.preventDefault());
 </script>
 </body>
 </html>
