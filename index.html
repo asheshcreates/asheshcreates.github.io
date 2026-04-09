@@ -11,10 +11,10 @@
 :root{--black:#111111;--white:#F2F2F2;--glass:rgba(255,255,255,0.08);--glass-border:rgba(255,255,255,0.14);--shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 0.5px rgba(255,255,255,0.07) inset;--radius:12px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;}
 html,body{width:100%;height:100%;overflow:hidden;background:#1c1c1c;color:#f0f0f0;font-family:var(--font);user-select:none;cursor:default;}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04;pointer-events:none;z-index:9999;}
- 
-#bg{position:fixed;inset:0;background-image:url('bg.png');background-size:cover;background-position:center top;background-repeat:no-repeat;z-index:0;}
+
+#bg{position:fixed;inset:0;background-color:#1c1c1c;background-size:cover;background-position:center top;background-repeat:no-repeat;z-index:0;}
 #bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,0.3) 100%);}
- 
+
 #menubar{position:fixed;top:0;left:0;right:0;height:28px;background:rgba(18,18,18,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;padding:0 16px;z-index:1000;gap:20px;}
 .menu-logo{font-size:13px;font-weight:600;color:#f0f0f0;}
 .menu-items{display:flex;gap:18px;margin-left:8px;}
@@ -22,21 +22,21 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .menu-item:hover{background:rgba(255,255,255,0.1);}
 .menu-right{margin-left:auto;}
 .menu-time{font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);}
- 
+
 #desktop{position:fixed;top:28px;bottom:82px;left:0;right:0;overflow:hidden;z-index:1;}
- 
+
 .folder{position:absolute;width:88px;cursor:pointer;z-index:10;animation:fadeIn 0.5s ease both;}
 @keyframes fadeIn{from{opacity:0;transform:scale(0.88) translateY(6px);}to{opacity:1;transform:scale(1) translateY(0);}}
 .folder:hover .folder-thumb{transform:scale(1.07);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
 .folder:active{transform:scale(0.96);}
 .folder-thumb{width:80px;height:68px;border-radius:10px;overflow:hidden;border:0.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);margin:0 auto 5px;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s;display:flex;align-items:center;justify-content:center;font-size:26px;}
 .folder-label{text-align:center;font-size:11px;font-weight:400;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.9);line-height:1.3;letter-spacing:0.01em;padding:0 2px;}
- 
+
 .window{position:fixed;background:rgba(26,26,26,0.94);backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);border:0.5px solid rgba(255,255,255,0.14);border-radius:var(--radius);overflow:hidden;z-index:500;box-shadow:var(--shadow);display:none;min-width:280px;min-height:180px;}
 .window.active{display:flex;flex-direction:column;animation:winOpen 0.22s cubic-bezier(0.34,1.2,0.64,1) both;}
 @keyframes winOpen{from{opacity:0;transform:scale(0.94);}to{opacity:1;transform:scale(1);}}
 .window.fullscreen{top:28px!important;left:0!important;width:100vw!important;height:calc(100vh - 28px)!important;border-radius:0!important;}
- 
+
 .titlebar{height:38px;background:rgba(36,36,36,0.97);border-bottom:0.5px solid rgba(255,255,255,0.09);display:flex;align-items:center;padding:0 12px;cursor:grab;flex-shrink:0;position:relative;}
 .titlebar:active{cursor:grabbing;}
 .traffic-lights{display:flex;gap:7px;}
@@ -46,14 +46,14 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .tl.min{background:#FFBD2E;}
 .tl.max{background:#28C840;}
 .win-title{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:500;color:rgba(255,255,255,0.6);white-space:nowrap;}
- 
+
 .resize-handle{position:absolute;bottom:0;right:0;width:18px;height:18px;cursor:se-resize;z-index:20;}
 .resize-handle::before{content:'';position:absolute;right:3px;bottom:3px;width:9px;height:9px;border-right:2px solid rgba(255,255,255,0.2);border-bottom:2px solid rgba(255,255,255,0.2);}
- 
+
 .win-body{flex:1;overflow-y:auto;overflow-x:hidden;}
 .win-body::-webkit-scrollbar{width:6px;}
 .win-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px;}
- 
+
 /* CONTACT */
 .contact-photo-wrap{padding:24px 24px 16px;display:flex;gap:16px;align-items:flex-start;border-bottom:0.5px solid rgba(255,255,255,0.07);}
 .contact-photo{width:78px;height:78px;border-radius:50%;object-fit:cover;object-position:top center;flex-shrink:0;border:2px solid rgba(255,255,255,0.1);}
@@ -75,7 +75,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .map-wrap iframe{width:100%;height:100%;border:none;filter:grayscale(1) brightness(0.55) contrast(1.1);}
 .contact-cta{display:block;margin:14px 24px 20px;padding:10px;background:rgba(74,144,226,0.18);border:0.5px solid rgba(74,144,226,0.35);border-radius:8px;text-align:center;font-size:13px;font-weight:500;color:#5aabff;cursor:pointer;text-decoration:none;transition:background 0.15s;}
 .contact-cta:hover{background:rgba(74,144,226,0.3);}
- 
+
 /* NOTES */
 .notes-layout{display:flex;height:100%;flex:1;overflow:hidden;}
 .notes-sidebar{width:190px;flex-shrink:0;background:rgba(255,210,40,0.05);border-right:0.5px solid rgba(255,255,255,0.07);overflow-y:auto;}
@@ -91,7 +91,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .notes-body h3{font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.07em;margin:18px 0 7px;}
 .notes-body ul{padding-left:16px;margin-bottom:11px;}
 .notes-body li{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.72;margin-bottom:3px;}
- 
+
 /* PROJECTS */
 .proj-pad{padding:26px;}
 .proj-placeholder{width:100%;height:210px;border-radius:8px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:22px;}
@@ -107,7 +107,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .badge{display:inline-block;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:13px;}
 .badge-prod{background:rgba(255,189,46,0.1);color:#FFBD2E;border:0.5px solid rgba(255,189,46,0.28);}
 .badge-active{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.42);border:0.5px solid rgba(255,255,255,0.1);}
- 
+
 /* DOCK */
 #dock{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:8px;padding:8px 14px 10px;background:rgba(24,24,24,0.68);backdrop-filter:blur(36px);-webkit-backdrop-filter:blur(36px);border:0.5px solid rgba(255,255,255,0.18);border-radius:22px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,0.55),0 0 0 0.5px rgba(255,255,255,0.04) inset;}
 .dock-sep{width:0.5px;height:42px;background:rgba(255,255,255,0.22);margin:0 4px;align-self:center;}
@@ -117,7 +117,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .dock-item:hover .dock-tooltip{opacity:1;}
 .dock-dot{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:4px;height:4px;background:rgba(255,255,255,0.65);border-radius:50%;display:none;}
 .dock-item.open .dock-dot{display:block;}
- 
+
 /* BOOT */
 #boot{position:fixed;inset:0;background:#111;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:9998;transition:opacity 0.7s ease;}
 #boot.hidden{opacity:0;pointer-events:none;}
@@ -129,14 +129,14 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </style>
 </head>
 <body>
- 
+
 <div id="boot">
   <div class="boot-logo">Ashesh Arora Studios</div>
   <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
 </div>
- 
+
 <div id="bg"></div>
- 
+
 <div id="menubar">
   <span class="menu-logo">AAS</span>
   <div class="menu-items">
@@ -148,9 +148,9 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <span class="menu-time" id="clock"></span>
   </div>
 </div>
- 
+
 <div id="desktop"></div>
- 
+
 <!-- CONTACT WINDOW -->
 <div class="window" id="win-contact" style="width:400px;">
   <div class="titlebar" data-win="win-contact">
@@ -198,7 +198,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
   <div class="resize-handle"></div>
 </div>
- 
+
 <!-- NOTES WINDOW -->
 <div class="window" id="win-notes" style="width:560px;height:420px;">
   <div class="titlebar" data-win="win-notes">
@@ -238,7 +238,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
   <div class="resize-handle"></div>
 </div>
- 
+
 <!-- PROJECT WINDOWS -->
 <div class="window" id="win-tib" style="width:620px;">
   <div class="titlebar" data-win="win-tib">
@@ -266,7 +266,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div></div>
   <div class="resize-handle"></div>
 </div>
- 
+
 <div class="window" id="win-chatorey" style="width:620px;">
   <div class="titlebar" data-win="win-chatorey">
     <div class="traffic-lights">
@@ -291,7 +291,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div></div>
   <div class="resize-handle"></div>
 </div>
- 
+
 <div class="window" id="win-pcoc" style="width:620px;">
   <div class="titlebar" data-win="win-pcoc">
     <div class="traffic-lights">
@@ -316,7 +316,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div></div>
   <div class="resize-handle"></div>
 </div>
- 
+
 <div class="window" id="win-transformation" style="width:620px;">
   <div class="titlebar" data-win="win-transformation">
     <div class="traffic-lights">
@@ -341,7 +341,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div></div>
   <div class="resize-handle"></div>
 </div>
- 
+
 <!-- DOCK -->
 <div id="dock">
   <div class="dock-item" id="di-contact" onclick="openWin('win-contact')">
@@ -403,18 +403,25 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="dock-tooltip">YouTube</div>
   </div>
 </div>
- 
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CLOCK
 function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
 tick();setInterval(tick,1000);
- 
-// BOOT
-setTimeout(()=>{
-  document.getElementById('boot').classList.add('hidden');
-  setTimeout(()=>{document.getElementById('boot').remove();spawnFolders();},700);
-},2400);
- 
+
+// BOOT - always dismiss after 2s regardless
+function dismissBoot(){
+  const b=document.getElementById('boot');
+  if(!b)return;
+  b.classList.add('hidden');
+  setTimeout(()=>{if(b.parentNode)b.parentNode.removeChild(b);spawnFolders();},600);
+  // Load bg image lazily after boot
+  const img=new Image();
+  img.onload=()=>{document.getElementById('bg').style.backgroundImage="url('bg.png')";};
+  img.src='bg.png';
+}
+setTimeout(dismissBoot,2000);
+
 // FOLDERS
 const projects=[
   {id:'win-tib',label:'This Is\nBrampton',emoji:'🎬',delay:0},
@@ -423,7 +430,7 @@ const projects=[
   {id:'win-transformation',label:'Transformation',emoji:'✦',delay:240},
 ];
 const positions=[{x:80,y:60},{x:210,y:110},{x:85,y:270},{x:215,y:350}];
- 
+
 function spawnFolders(){
   const desk=document.getElementById('desktop');
   projects.forEach((p,i)=>{
@@ -438,7 +445,7 @@ function spawnFolders(){
     makeDrag(f);
   });
 }
- 
+
 // WINDOW SYSTEM
 let zTop=500;
 function openWin(id){
@@ -503,7 +510,7 @@ function tileWindows(){
     setTimeout(()=>win.style.transition='',300);
   });
 }
- 
+
 // DRAG
 function makeDrag(el,sel){
   const h=sel?el.querySelector(sel):el;
@@ -520,7 +527,7 @@ function makeDrag(el,sel){
     document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
   });
 }
- 
+
 // RESIZE
 function makeResize(el){
   const h=el.querySelector('.resize-handle');
@@ -537,7 +544,7 @@ function makeResize(el){
     document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
   });
 }
- 
+
 // NOTES
 const noteData={
   about:`<h2>About</h2><p>Ashesh Arora. Creative Director. Brampton, Ontario.</p><p>Founder of Ashesh Arora Studios — a purpose-driven creative production studio built at the intersection of AI filmmaking, brand identity, and visual storytelling. Not a content agency. Not a freelancer. A studio.</p><p>Two words: culture and connection.</p><h3>Background</h3><p>Brand photography, creative direction, campaign strategy, AI film production. Working with startups, premium brands, and multicultural communities across the GTA and beyond.</p><h3>Contact</h3><p>ashesh@ashesharorastudios.com · +1.647.395.2224 · 8 Nelson St W, Brampton ON</p>`,
@@ -549,7 +556,7 @@ function showNote(key,el){
   document.querySelectorAll('.note-item').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
 }
- 
+
 // DOCK MAGNIFICATION
 const dockEl=document.getElementById('dock');
 const dockItems=document.querySelectorAll('.dock-item');
