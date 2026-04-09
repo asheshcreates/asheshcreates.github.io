@@ -119,13 +119,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .dock-item.open .dock-dot{display:block;}
 
 /* BOOT */
-#boot{position:fixed;inset:0;background:#111;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:9998;transition:opacity 0.7s ease;}
-#boot.hidden{opacity:0;pointer-events:none;}
-.boot-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;letter-spacing:0.5em;text-transform:uppercase;color:rgba(255,255,255,0.55);animation:bf 1s ease 0.4s both;}
-@keyframes bf{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
-.boot-bar-wrap{width:96px;height:1px;background:rgba(255,255,255,0.1);border-radius:1px;overflow:hidden;}
-.boot-bar{height:100%;background:rgba(255,255,255,0.65);width:0;animation:bl 1.5s ease 0.6s both;}
-@keyframes bl{0%{width:0;}60%{width:72%;}100%{width:100%;}}
+#boot{display:none;}
 </style>
 </head>
 <body>
@@ -409,18 +403,13 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
 tick();setInterval(tick,1000);
 
-// BOOT - always dismiss after 2s regardless
-function dismissBoot(){
-  const b=document.getElementById('boot');
-  if(!b)return;
-  b.classList.add('hidden');
-  setTimeout(()=>{if(b.parentNode)b.parentNode.removeChild(b);spawnFolders();},600);
-  // Load bg image lazily after boot
+// BOOT - skip, load immediately
+window.addEventListener('DOMContentLoaded', ()=>{
+  spawnFolders();
   const img=new Image();
   img.onload=()=>{document.getElementById('bg').style.backgroundImage="url('bg.png')";};
   img.src='bg.png';
-}
-setTimeout(dismissBoot,2000);
+});
 
 // FOLDERS
 const projects=[
