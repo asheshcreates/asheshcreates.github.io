@@ -1,0 +1,144 @@
+/* ---------- Closed cover: floating 3D object ---------- */
+
+.flipbook__cover-trigger {
+  position: relative;
+  width: 300px;
+  height: 429px;
+  max-width: 82vw;
+  aspect-ratio: 417.75 / 597.75;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(242, 242, 242, 0.14);
+  border-radius: 6px;
+  perspective: 1200px;
+  box-shadow: 16px 32px 56px rgba(0, 0, 0, 0.9);
+  cursor: pointer;
+  transition: box-shadow 0.35s ease;
+}
+
+.flipbook__cover-trigger:hover {
+  box-shadow: 20px 40px 70px rgba(0, 0, 0, 0.95);
+}
+
+.flipbook__cover-trigger img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .flipbook__cover-trigger {
+    width: 82vw;
+    max-width: 330px;
+    height: auto;
+  }
+}
+
+/* ---------- Open state: centered modal, shares layoutId with the closed
+   cover so it visually flies from its grid slot to center stage ---------- */
+
+.flipbook__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.25rem, 5vw, 3rem);
+  background: rgba(10, 10, 10, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.flipbook--open {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 2.25rem clamp(1rem, 3vw, 2rem) 1.75rem;
+}
+
+.flipbook__close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  padding: 0.5rem 0.75rem;
+}
+
+.flipbook__close:hover {
+  opacity: 1;
+}
+
+/* Single-page reader: the current page sits large and centered, the
+   previous/next pages float smaller to either side as a preview. Advancing
+   glides the whole set over rather than flipping/rotating a page. Side
+   pages render outside this box's own width (via percentage transform) —
+   the surrounding backdrop is intentionally unclipped so they're free to
+   show in the darker space to either side, matching a coverflow-style
+   reader rather than a bound page. */
+.flipbook__viewport {
+  position: relative;
+  width: min(440px, 58vw);
+  aspect-ratio: 417.75 / 597.75;
+  max-height: 68vh;
+}
+
+.flipbook__slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000000;
+  border: 1px solid rgba(242, 242, 242, 0.14);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.flipbook__slide--active {
+  cursor: default;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+}
+
+.flipbook__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.flipbook__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.flipbook__nav button {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.flipbook__nav button:not(:disabled):hover {
+  opacity: 1;
+}
+
+.flipbook__nav button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.flipbook__page-count {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  opacity: 0.5;
+}

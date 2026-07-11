@@ -1,0 +1,66 @@
+.thumb-strip {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.thumb-strip__track {
+  display: flex;
+  width: max-content;
+  gap: clamp(1rem, 2vw, 2rem);
+  animation: thumb-scroll 32s linear infinite;
+}
+
+.thumb-strip:hover .thumb-strip__track {
+  animation-play-state: paused;
+}
+
+.thumb-strip__item {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(240px, 28vw, 380px);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--studio-black);
+}
+
+.thumb-strip__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.thumb-strip__item:hover img {
+  transform: scale(1.04);
+}
+
+.thumb-strip__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  background: linear-gradient(to top, rgba(17, 17, 17, 0.75), transparent);
+}
+
+@keyframes thumb-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb-strip__track {
+    animation: none;
+    overflow-x: auto;
+  }
+}

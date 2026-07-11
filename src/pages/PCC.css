@@ -1,0 +1,237 @@
+.pcc {
+  /* Locked dark identity for this project regardless of the site-wide
+     light/dark toggle — Belong Gala's visual language is black by design. */
+  --bg: var(--studio-black);
+  --fg: var(--studio-white);
+  --line: rgba(242, 242, 242, 0.12);
+  --cell: rgba(242, 242, 242, 0.07);
+  --cell-line: rgba(10, 10, 10, 0.5);
+  --scrim: rgba(10, 10, 10, 0.85);
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.pcc-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.pcc-section + .pcc-section {
+  margin-top: 60px;
+}
+
+.pcc-section--hero {
+  padding-top: clamp(5rem, 12vw, 7rem);
+  text-align: center;
+}
+
+.pcc-section--hero .flip-title {
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .pcc-section {
+    padding: 0 20px;
+  }
+
+  .pcc-section + .pcc-section {
+    margin-top: 40px;
+  }
+}
+
+.pcc-copy {
+  max-width: 680px;
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.pcc-hero-photo,
+.pcc-extra-photo {
+  width: 100%;
+}
+
+.video-frame.pcc-recap-video {
+  aspect-ratio: 5070 / 2160;
+}
+
+.pcc-hero-photo img {
+  width: 100%;
+  aspect-ratio: 1500 / 984;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* ---------- Banyan two-column row ---------- */
+
+.pcc-banyan-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+.pcc-banyan-row__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2502 / 1708;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.85);
+}
+
+@media (max-width: 768px) {
+  .pcc-banyan-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ---------- Hub graphic ---------- */
+
+.pcc-hub {
+  max-width: 672px;
+  margin: 0 auto;
+}
+
+.pcc-hub img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* ---------- 3x2 video grid ---------- */
+
+.pcc-video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) and (min-width: 641px) {
+  .pcc-video-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pcc-video-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.pcc-video-tile__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pcc-video-tile__frame:disabled {
+  cursor: default;
+}
+
+.pcc-video-tile__video,
+.pcc-video-tile__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pcc-video-tile__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pcc-video-tile__name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pcc-video-tile__role {
+  font-family: var(--font-body);
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+/* ---------- Closing ---------- */
+
+.pcc-closing {
+  text-align: center;
+  padding: clamp(3rem, 8vw, 5rem) 0;
+}
+
+.pcc-closing__line {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+}
+
+.pcc-closing__credit {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
+/* ---------- FRE8 divider ---------- */
+
+.pcc-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 900px;
+  margin: 120px auto 0;
+  padding: 0 32px;
+}
+
+.pcc-divider__rule {
+  width: 60px;
+  height: 1px;
+  background: var(--line);
+}
+
+.pcc-divider__label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .pcc-divider {
+    margin-top: 60px;
+    padding: 0 20px;
+  }
+}
+
+.fre8-section {
+  margin-top: 80px !important;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+}
+
+.fre8-video {
+  width: 100%;
+}

@@ -1,0 +1,32 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--fg);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.theme-toggle:hover {
+  opacity: 1;
+}
+
+.theme-toggle .bulb {
+  width: 20px;
+  height: 20px;
+}
+
+/* Rays only glow when the bulb is "on" (light theme). */
+.bulb__rays {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.theme-toggle--light .bulb__rays {
+  opacity: 1;
+}
+
+.theme-toggle--dark {
+  opacity: 0.55;
+}

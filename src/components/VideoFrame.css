@@ -1,0 +1,148 @@
+.video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0a0a0a;
+  padding: 6px;
+  border-radius: 8px;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.85);
+}
+
+.video-frame::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 4px;
+  border: 1px solid #1c1c1c;
+  pointer-events: none;
+}
+
+/* The screen chrome is always dark regardless of site theme, so the
+   fallback placeholder needs its own fixed light-on-dark styling instead
+   of the theme-relative --cell/--line tokens (which read as dark-on-dark
+   here in light mode). */
+.video-frame .asset-slot {
+  background: rgba(242, 242, 242, 0.06);
+  border-color: rgba(242, 242, 242, 0.22);
+}
+
+.video-frame .asset-slot__icon,
+.video-frame .asset-slot__label {
+  color: #f2f2f2;
+}
+
+.video-frame__video {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+  display: block;
+}
+
+.video-frame__controls {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.75), transparent);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.video-frame:hover .video-frame__controls,
+.video-frame:focus-within .video-frame__controls {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.video-frame__play,
+.video-frame__unmute {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(242, 242, 242, 0.25);
+  color: #f2f2f2;
+  font-size: 0.85rem;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.video-frame__play:hover,
+.video-frame__unmute:hover {
+  background: rgba(10, 10, 10, 0.9);
+  transform: scale(1.06);
+}
+
+.video-frame__track {
+  position: relative;
+  flex: 1;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.video-frame__track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(242, 242, 242, 0.25);
+}
+
+.video-frame__track-fill {
+  position: absolute;
+  left: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: #f2f2f2;
+  pointer-events: none;
+}
+
+.video-frame__track-thumb {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f2f2f2;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.4);
+  pointer-events: none;
+}
+
+.video-frame__time {
+  flex: none;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  color: #f2f2f2;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .video-frame__controls {
+    opacity: 1;
+    transform: none;
+  }
+
+  .video-frame__time {
+    display: none;
+  }
+}

@@ -1,0 +1,437 @@
+.chatorey {
+  /*
+   * The case study is a photo-heavy layout with text overlaid on dark
+   * imagery, so it stays in its dark treatment regardless of the site theme
+   * (a light invert would break text-on-image legibility). Tokens are
+   * re-pinned to dark here so nested chrome (nav, cells) stays consistent.
+   */
+  --bg: var(--studio-black);
+  --fg: var(--studio-white);
+  --line: rgba(242, 242, 242, 0.12);
+  --cell: rgba(242, 242, 242, 0.07);
+  --cell-line: rgba(10, 10, 10, 0.5);
+  --scrim: rgba(10, 10, 10, 0.85);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.ch-section {
+  padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 5vw, 4rem);
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.ch-heading {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.95;
+  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
+}
+
+.ch-heading--left {
+  text-align: left;
+  font-size: clamp(2.25rem, 6vw, 5rem);
+}
+
+.ch-heading--right {
+  text-align: right;
+  margin-left: auto;
+}
+
+.ch-heading--small {
+  font-size: clamp(1.5rem, 3.4vw, 2.75rem);
+}
+
+.ch-heading--center {
+  text-align: center;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+}
+
+.ch-heading--quiet {
+  font-size: 0.9rem;
+  letter-spacing: 0.35em;
+  opacity: 0.7;
+}
+
+.ch-copy {
+  max-width: 42rem;
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  line-height: 1.55;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+
+.ch-copy--center {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* ---------- Hero ---------- */
+
+.ch-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+}
+
+.ch-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.ch-hero__wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.35) 45%, transparent 75%);
+}
+
+.ch-hero__logo {
+  position: absolute;
+  top: clamp(1.5rem, 4vw, 2.75rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(9rem, 20vw, 13rem);
+  height: auto;
+}
+
+.ch-hero__tagline {
+  position: absolute;
+  right: clamp(1.25rem, 5vw, 3rem);
+  bottom: clamp(2rem, 6vw, 4rem);
+  max-width: 28rem;
+  text-align: right;
+}
+
+.ch-hero__tagline-main {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+  line-height: 1.45;
+  margin: 0 0 0.75rem;
+}
+
+.ch-hero__tagline-services {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+  line-height: 1.5;
+  opacity: 0.75;
+  margin: 0;
+}
+
+/* ---------- Grids ---------- */
+
+.ch-grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+/* Fixed 4-column grid, not auto-fit — with 8 dish shots that lands on two
+   full, even rows (symmetric) instead of an odd trailing row at wide
+   viewports. Larger gap than the shared .ch-grid default for the more
+   generous, editorial-spread feel. */
+.ch-grid--reflow {
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.ch-grid--reflow img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .ch-grid--reflow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Fixed 3x2 sequence for Creative Direction, per the original print layout. */
+.ch-grid--creative {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.ch-grid--creative img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .ch-grid--creative {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ch-grid--four {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.ch-grid--four img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+/* Packaging: a deliberately asymmetric 2x2, not a mirror-even grid —
+   alternating tiles drop lower so the row has editorial rhythm rather
+   than reading as a uniform product spec sheet. */
+.ch-grid--four.ch-grid--packaging {
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+}
+
+.ch-grid--packaging .ch-packaging-tile:nth-child(2n) {
+  transform: translateY(clamp(1.5rem, 5vw, 3.5rem));
+}
+
+@media (max-width: 560px) {
+  .ch-grid--four.ch-grid--packaging {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-grid--packaging .ch-packaging-tile:nth-child(2n) {
+    transform: none;
+  }
+}
+
+.ch-packaging-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ch-packaging-tile img {
+  /* Keyed cutouts sit directly on the page — crisp edges, no box, no
+     edge-fade halo. Sized by height so the differently-shaped products
+     read as an even, generously-sized row. */
+  width: auto;
+  max-width: 100%;
+  height: clamp(150px, 20vw, 230px);
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.ch-grid--packaging .ch-packaging-tile img {
+  height: clamp(220px, 30vw, 380px);
+}
+
+.ch-packaging-tile span {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+/* ---------- Partner's Attire ---------- */
+
+.ch-attire {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+}
+
+.ch-attire__col {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.ch-attire__col--main img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.ch-attire__col--details img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  /* Keyed cutouts on the page — crisp, no box, no edge-fade halo. */
+}
+
+/* Apron is the lead detail shot — sized up beyond the cap/tee above it,
+   bleeding slightly past the narrow details column rather than matching
+   their width exactly. */
+.ch-attire__apron {
+  width: 128%;
+  margin-left: -14%;
+}
+
+@media (max-width: 720px) {
+  .ch-attire {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-attire__col--details {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+  }
+
+  .ch-attire__apron {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* ---------- Butter Paper ---------- */
+
+.ch-grid--texture {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.ch-texture-block img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.ch-grid--mockups img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* ---------- IRL Visualization ---------- */
+
+.ch-irl {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.ch-irl img {
+  width: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Every Dish Tells A Story ---------- */
+
+.ch-samosa {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  margin-bottom: clamp(3.5rem, 8vw, 6rem);
+}
+
+.ch-samosa__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.ch-samosa__copy .ch-heading {
+  margin-bottom: 0.25rem;
+}
+
+.ch-samosa__kicker {
+  font-family: var(--font-title);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  margin: 0;
+  opacity: 0.85;
+}
+
+.ch-samosa__text {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+  max-width: 32rem;
+}
+
+.ch-samosa__text--quiet {
+  opacity: 0.55;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+}
+
+.ch-dish-hero img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+@media (max-width: 720px) {
+  .ch-samosa {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Monthly Artwork Rotation ---------- */
+
+.ch-artwork {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 1.2fr) 1fr;
+  grid-template-areas: 'a heading b' 'c heading d';
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.ch-artwork__frame--a {
+  grid-area: a;
+}
+.ch-artwork__frame--b {
+  grid-area: b;
+}
+.ch-artwork__frame--c {
+  grid-area: c;
+}
+.ch-artwork__frame--d {
+  grid-area: d;
+}
+
+.ch-artwork__frame img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.ch-artwork__heading {
+  grid-area: heading;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .ch-artwork {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'a b' 'heading heading' 'c d';
+  }
+
+  .ch-artwork__heading {
+    padding: 1rem 0;
+  }
+}
+
+/* ---------- Closing ---------- */
+
+.ch-closing {
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem);
+  text-align: center;
+}
+
+.ch-closing p {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  max-width: 40rem;
+  margin: 0 auto;
+}

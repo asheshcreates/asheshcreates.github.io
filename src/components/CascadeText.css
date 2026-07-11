@@ -1,0 +1,19 @@
+.cascade-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.cascade-char {
+  position: relative;
+  display: inline-block;
+}
+
+.cascade-char__sizer {
+  visibility: hidden;
+}
+
+.cascade-char__glyph {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+}

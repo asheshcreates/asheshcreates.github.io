@@ -1,0 +1,150 @@
+.flip-board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.flip-board__row {
+  display: flex;
+  width: fit-content;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.flip-board__row:hover {
+  opacity: 0.8;
+}
+
+/* This board sits over the hero's spinning background reel, so its cells
+   need to be fully opaque (not the shared translucent --cell tint) to stay
+   readable. Studio Black tile / white lettering in light theme, inverted
+   to white tile / black lettering in dark theme (--fg and --bg swap
+   automatically with the theme, so background:fg + color:bg is the
+   inverted pairing). Scoped to .flip-board only, not the base .flip-char,
+   so FlipTitle page headers elsewhere keep their own translucent look. */
+.flip-board .flip-char {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.flip-board .flip-char--space {
+  background: transparent;
+}
+
+.flip-char {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(0.55rem, 1.3vw, 1.3rem);
+  height: clamp(1.05rem, 2vw, 1.9rem);
+  margin-right: 1px;
+  background: var(--cell);
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(0.48rem, 0.9vw, 0.95rem);
+  letter-spacing: 0;
+  color: var(--fg);
+  overflow: hidden;
+}
+
+.flip-char::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--cell-line);
+}
+
+.flip-char--space {
+  background: transparent;
+  width: clamp(0.3rem, 0.7vw, 0.6rem);
+}
+
+.flip-char--space::after {
+  display: none;
+}
+
+/* Title-scale variant: same split-flap mechanism, sized for a page heading
+   rather than a compact list row. Doubled-up class selector so it still
+   wins over the mobile `.flip-char` override below regardless of source
+   order (equal specificity would otherwise let source order decide). */
+.flip-char.flip-char--lg {
+  width: clamp(1.05rem, 4.4vw, 3.1rem);
+  height: clamp(1.7rem, 6.4vw, 4.4rem);
+  margin-right: clamp(2px, 0.3vw, 5px);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 3.4vw, 2.5rem);
+  border-radius: 4px;
+}
+
+.flip-char.flip-char--lg.flip-char--space {
+  width: clamp(0.55rem, 2vw, 1.4rem);
+}
+
+/* Bolder, bigger step above --lg, for hero titles that need more weight
+   (This Is Brampton) without changing the shared --lg size everywhere else.
+   Capped lower than a naive "just bigger" scale because this variant lives
+   in a half-width grid column next to body copy, not a full-width hero —
+   the max here is tuned so an 8-letter line (BRAMPTON) still fits inside
+   that column at the grid's own max-width, not just at arbitrary viewports. */
+.flip-char.flip-char--xl {
+  width: clamp(1.1rem, 4.6vw, 3.2rem);
+  height: clamp(1.8rem, 6.6vw, 4.55rem);
+  margin-right: clamp(2px, 0.3vw, 5px);
+  font-weight: 800;
+  font-size: clamp(1rem, 3.6vw, 2.65rem);
+  border-radius: 4px;
+}
+
+.flip-char.flip-char--xl.flip-char--space {
+  width: clamp(0.6rem, 2vw, 1.5rem);
+}
+
+@media (max-width: 640px) {
+  .flip-board {
+    width: 100%;
+  }
+
+  .flip-board__row {
+    width: 100%;
+  }
+
+  .flip-char {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    height: clamp(0.95rem, 4.2vw, 1.2rem);
+    margin-right: 1px;
+    font-size: clamp(0.4rem, 1.9vw, 0.55rem);
+  }
+
+  .flip-char--space {
+    flex: 0.5 1 0;
+  }
+
+  .flip-char.flip-char--lg {
+    flex: none;
+    width: clamp(1.6rem, 7.5vw, 2.4rem);
+    height: clamp(2.4rem, 11vw, 3.4rem);
+    font-size: clamp(1.1rem, 5.5vw, 1.7rem);
+  }
+
+  .flip-char.flip-char--lg.flip-char--space {
+    width: clamp(0.8rem, 3.5vw, 1.2rem);
+  }
+
+  .flip-char.flip-char--xl {
+    flex: none;
+    width: clamp(1.9rem, 8.8vw, 2.9rem);
+    height: clamp(2.9rem, 13vw, 4.1rem);
+    font-size: clamp(1.3rem, 6.5vw, 2.05rem);
+  }
+
+  .flip-char.flip-char--xl.flip-char--space {
+    width: clamp(0.95rem, 4.2vw, 1.45rem);
+  }
+}

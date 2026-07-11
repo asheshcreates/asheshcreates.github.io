@@ -1,0 +1,192 @@
+.tib {
+  --bg: var(--studio-black);
+  --fg: var(--studio-white);
+  --line: rgba(242, 242, 242, 0.12);
+  --cell: rgba(242, 242, 242, 0.07);
+  --cell-line: rgba(10, 10, 10, 0.5);
+  --scrim: rgba(10, 10, 10, 0.85);
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  position: relative;
+}
+
+.tib__close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  line-height: 1;
+  font-weight: 300;
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.55);
+  border: 1px solid rgba(242, 242, 242, 0.18);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.tib__close:hover {
+  background: rgba(10, 10, 10, 0.8);
+  transform: scale(1.05);
+}
+
+/* ---------- Grid ----------
+ * Swiss modular grid, 4 columns. The grid lines are a layout guide only —
+ * no visible borders/hairlines are drawn; the structure reads through
+ * spacing and alignment alone. */
+
+.tib__grid {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(4rem, 9vw, 6rem) clamp(1.25rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    'video video video video'
+    'title title intro intro'
+    'studio studio director director'
+    'studio studio pbline pbobj';
+  column-gap: clamp(1.5rem, 4vw, 3rem);
+  row-gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.tib__cell--video {
+  grid-area: video;
+}
+
+.tib__cell--title {
+  grid-area: title;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tib__cell--title .flip-title {
+  align-items: flex-start;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.tib__cell--title .flip-title__row {
+  justify-content: flex-start;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tib__cell--title .flip-title__row::-webkit-scrollbar {
+  display: none;
+}
+
+.tib__cell--intro {
+  grid-area: intro;
+  display: flex;
+  align-items: center;
+}
+
+.tib__intro {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.tib__cell--studio {
+  grid-area: studio;
+}
+
+.tib__cell--director {
+  grid-area: director;
+}
+
+.tib__eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+  margin-bottom: 0.85rem;
+}
+
+.tib__body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  line-height: 1.75;
+  opacity: 0.85;
+  margin: 0 0 1.1rem;
+}
+
+.tib__body:last-of-type {
+  margin-bottom: 0;
+}
+
+.tib__signoff {
+  display: block;
+  margin-top: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  opacity: 0.5;
+}
+
+.tib__cell--pbline {
+  grid-area: pbline;
+  display: flex;
+  align-items: center;
+}
+
+.tib__playbill-invite {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+}
+
+.tib__cell--pbobj {
+  grid-area: pbobj;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .tib__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'video'
+      'title'
+      'intro'
+      'studio'
+      'director'
+      'pbline'
+      'pbobj';
+    row-gap: 2.5rem;
+  }
+
+  .tib__cell--title .flip-title {
+    align-items: center;
+  }
+
+  .tib__cell--title .flip-title__row {
+    justify-content: center;
+  }
+
+  .tib__cell--intro,
+  .tib__cell--pbline {
+    text-align: center;
+    justify-content: center;
+  }
+}

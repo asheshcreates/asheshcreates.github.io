@@ -1,105 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ashesh Arora Studios</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300&display=swap" rel="stylesheet">
-
-  <style>
-    @font-face {
-      font-family: 'Balgin';
-      src: url('Fontspring-DEMO-balgin-lightexpanded.otf') format('opentype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-    }
-
-    body {
-      background-color: #080808;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 100vh;
-      padding: 60px 40px;
-    }
-
-    .name {
-      font-family: 'Balgin', 'Raleway', sans-serif;
-      font-weight: normal;
-      font-size: clamp(28px, 5.5vw, 62px);
-      color: #ffffff;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      line-height: 1;
-    }
-
-    .studios {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 200;
-      font-size: clamp(14px, 2.2vw, 26px);
-      color: rgba(255, 255, 255, 0.55);
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      margin-top: 16px;
-    }
-
-    .divider {
-      width: 40px;
-      height: 0.5px;
-      background: #2a2a2a;
-      margin: 36px auto;
-    }
-
-    .error-message {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: clamp(9px, 1.1vw, 12px);
-      color: #555555;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      line-height: 2;
-    }
-
-    .thank-you {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: clamp(8px, 1vw, 11px);
-      color: #303030;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-top: 52px;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="name">ASHESH ARORA</div>
-  <div class="studios">STUDIOS</div>
-
-  <div class="divider"></div>
-
-  <p class="error-message">
-    Error connecting to portal.<br>
-    Please try again in a few minutes.
-  </p>
-
-  <p class="thank-you">Thank you</p>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/mascot-favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Ashesh Arora Studios — a cultural IP and creative production studio building stories worth remembering." />
+    <title>Ashesh Arora Studios</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

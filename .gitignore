@@ -1,0 +1,7 @@
+node_modules
+dist
+.DS_Store
+
+# Large source video files stay local only — swapped for hosted embeds
+# (YouTube/Vimeo unlisted) before this goes live, per project brief.
+public/videos/
