@@ -6,8 +6,9 @@ Source of truth for Claude Code sessions. Read this in full before writing any c
 ## 1. TECH STACK
 
 - React 19 + Vite 8 + Framer Motion
-- Deploy target: GitHub Pages via `asheshcreates/asheshcreates.github.io`
+- Deploy target: GitHub Pages via `asheshcreates/asheshcreates.github.io`, custom domain `ashesharorastudios.com` (`public/CNAME`)
 - No static HTML — this is a real component-based build
+- **Deployment (live):** `.github/workflows/deploy.yml` builds on every push to `main` (`npm ci` + `npm run build`) and deploys `dist/` via the official `actions/upload-pages-artifact` + `actions/deploy-pages`. Repo's Pages source was switched from legacy branch-serving (`build_type: legacy`, served `main` root directly) to `build_type: workflow` via the API — the legacy setting had been serving the raw Vite `index.html` source (referencing `/src/main.jsx` unbundled) straight from `main`, i.e. **the live site was broken** before this, left over from before the repo became a Vite project. Custom domain cname was also re-applied via the API (`gh api -X PUT .../pages -f cname=...`) since Actions-based Pages deploys don't auto-read a `CNAME` file out of the build artifact the way legacy branch deploys sometimes do; DNS was already correctly pointed there, so the domain came back with an approved HTTPS cert immediately. The old `npm run deploy` script (`gh-pages` npm package, pushes `dist/` to a `gh-pages` branch) is now dead/unused now that Pages reads from Actions instead of any branch — left in `package.json` rather than removed, flag for Ashesh to confirm it can go.
 
 ---
 
@@ -229,5 +230,5 @@ All imagery extracted and cropped directly from the studio's own SOLUM Brief PDF
 1. Confirm with Ashesh whether the orphaned PCC files (Section 7, Section 10) can be deleted.
 2. Resolve the remaining open items: Ashesh's sign-off on the Solum hero image substitution, Values second line, Chatorey hero photo resolution, TIB public-clearance confirmation.
 3. Confirm the new Playbill reader's glide transition and side-preview sizing/spacing read correctly in a real browser (verified logic/state end-to-end this round, but the spring animation itself hasn't yet had a clean visual confirmation — see chat history for why).
-4. Final QA pass: cross-browser/mobile check of the flip-board, cascade, and Playbill glide animations, theme-schedule edge cases (exact 8pm/5am transition), and a production build (`npm run build`) verification before any deploy to `asheshcreates.github.io`.
-5. Swap gitignored local videos for hosted embeds before launch (see asset note above).
+4. Final QA pass: cross-browser/mobile check of the flip-board, cascade, and Playbill glide animations, theme-schedule edge cases (exact 8pm/5am transition). Production build + deploy pipeline itself is done and verified live (see Section 1).
+5. **Urgent, confirmed live:** `public/videos/` is gitignored, so none of those files exist in the repo the Actions build checks out from — every video on the live site 404s right now (confirmed: `ashesharorastudios.com/videos/tib-hero.mp4` → 404). This affects TIB's hero video and PCC's panel/vision-film/FRE8 videos at minimum. Swap for hosted embeds (YouTube/Vimeo unlisted) per the existing asset note, or commit the files directly if they're small enough — either way this needs to happen before the site is actually shown to anyone, not just before some future "launch" milestone, since it's live now.
