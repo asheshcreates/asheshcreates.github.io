@@ -57,14 +57,17 @@
 
 /* Large ambient reel, sits behind every other hero element (first in DOM,
    z-index left at auto so normal paint order puts it at the back) and
-   spins continuously on load. Sized off vh so it stays circular and scales
-   with the hero's own height rather than warping on wide viewports. */
+   spins continuously on load. Position/size below are the locked-in
+   values tested against the full layout (wordmark, REACH OUT, 01-04
+   project list, STUDIOS) on a 16:9 desktop mockup, percentages relative
+   to .hero (the reel's positioned parent). */
 .hero__reel-bg {
   position: absolute;
-  top: 54%;
-  left: calc(71% + 3.5rem);
-  width: clamp(340px, 88vh, 960px);
-  transform: translate(-50%, -50%);
+  width: 48%;
+  left: 79%;
+  top: 82%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 1;
   animation: hero-reel-spin 2.4s steps(11, end) infinite;
   pointer-events: none;
 }

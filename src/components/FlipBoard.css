@@ -15,22 +15,6 @@
   opacity: 0.8;
 }
 
-/* This board sits over the hero's spinning background reel, so its cells
-   need to be fully opaque (not the shared translucent --cell tint) to stay
-   readable. Studio Black tile / white lettering in light theme, inverted
-   to white tile / black lettering in dark theme (--fg and --bg swap
-   automatically with the theme, so background:fg + color:bg is the
-   inverted pairing). Scoped to .flip-board only, not the base .flip-char,
-   so FlipTitle page headers elsewhere keep their own translucent look. */
-.flip-board .flip-char {
-  background: var(--fg);
-  color: var(--bg);
-}
-
-.flip-board .flip-char--space {
-  background: transparent;
-}
-
 .flip-char {
   position: relative;
   display: inline-flex;
