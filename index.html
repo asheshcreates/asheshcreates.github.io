@@ -6,9 +6,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Ashesh Arora Studios — a cultural IP and creative production studio building stories worth remembering." />
     <title>Ashesh Arora Studios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Archivo:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body {
+        width: 100%;
+        min-height: 100%;
+        background: #0a0a0a;
+        color: #f2f2f2;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 24px;
+        font-family: 'Raleway', system-ui, sans-serif;
+        font-weight: 300;
+      }
+
+      body::before {
+        content: '';
+        position: fixed; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.035;
+        pointer-events: none;
+      }
+
+      main {
+        text-align: center;
+        max-width: 520px;
+      }
+
+      .mark {
+        font-family: 'Archivo', system-ui, sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-size: 12px;
+        opacity: 0.6;
+        margin-bottom: 40px;
+      }
+
+      h1 {
+        font-family: 'Archivo', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: clamp(28px, 5vw, 40px);
+        line-height: 1.25;
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-size: 16px;
+        line-height: 1.6;
+        opacity: 0.7;
+        margin-bottom: 8px;
+      }
+
+      .eta {
+        margin-top: 28px;
+        display: inline-block;
+        padding: 10px 22px;
+        border: 0.5px solid rgba(242,242,242,0.2);
+        border-radius: 999px;
+        font-size: 13px;
+        letter-spacing: 0.03em;
+        opacity: 0.85;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <main>
+      <div class="mark">Ashesh Arora Studios</div>
+      <h1>We're making some updates.</h1>
+      <p>Our site is temporarily unavailable while we work behind the scenes.</p>
+      <p>Thanks for your patience — check back soon.</p>
+      <div class="eta">Back by July 16, 10:00 AM ET</div>
+    </main>
   </body>
 </html>
