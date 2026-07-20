@@ -2,12 +2,11 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { Reveal } from '../components/Reveal.jsx'
 import FlipTitle from '../components/FlipTitle.jsx'
-import VideoFrame from '../components/VideoFrame.jsx'
 import FlipBook from '../components/FlipBook.jsx'
 import ProjectPager from '../components/ProjectPager.jsx'
+import '../components/VideoFrame.css'
 import './TIB.css'
 
-import heroPoster from '../assets/tib/hero-poster.jpg'
 import zinePage1 from '../assets/tib/zine/page-1.jpg'
 import zinePage2 from '../assets/tib/zine/page-2.jpg'
 import zinePage3 from '../assets/tib/zine/page-3.jpg'
@@ -37,7 +36,16 @@ export default function TIB() {
 
       <div className="tib__grid">
         <div className="tib__cell tib__cell--video">
-          <VideoFrame src="/videos/tib-hero.mp4" poster={heroPoster} />
+          <div className="video-frame">
+            <iframe
+              className="video-frame__video"
+              src="https://www.youtube-nocookie.com/embed/QgQduFdvRRQ?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0&playsinline=1"
+              title="This Is Brampton"
+              frameBorder="0"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
         </div>
 
         <Reveal tag="div" className="tib__cell tib__cell--title">

@@ -1,10 +1,11 @@
 import Nav from '../components/Nav.jsx'
 import { Reveal, RevealGrid } from '../components/Reveal.jsx'
 import ProjectPager from '../components/ProjectPager.jsx'
+import PlaygroundOverlay from '../components/PlaygroundOverlay.jsx'
 import './Chatorey.css'
 
-import heroFries from '../assets/chatorey/hero-fries-wide.jpeg'
-import mascotLogo from '../assets/chatorey/logo-white.png'
+import heroPhotoCard from '../assets/chatorey/hero/photo-card.png'
+import heroNoteCard from '../assets/chatorey/hero/note-card.png'
 
 import cd1 from '../assets/chatorey/creative-direction/1.jpeg'
 import cd2 from '../assets/chatorey/creative-direction/2.jpeg'
@@ -59,20 +60,22 @@ export default function Chatorey() {
       <Nav />
 
       <section className="ch-hero">
-        <img src={heroFries} alt="Chatorey fries being tossed with spice" className="ch-hero__img" />
-        <div className="ch-hero__wash" />
-        <img src={mascotLogo} alt="Chatorey" className="ch-hero__logo" />
-        <div className="ch-hero__tagline">
-          <p className="ch-hero__tagline-main">
-            Chatorey is a bold Indian street food restaurant based in
-            Scarborough. They came with a brand identity and needed it
-            brought to life. Visually, consistently, and at a level that
-            would stop the scroll.
-          </p>
-          <p className="ch-hero__tagline-services">
-            Full menu photography shoot | Branded social content &amp; reels
-            | Brand packaging direction | Art Direction
-          </p>
+        <div
+          className="ch-hero__pattern"
+          style={{ backgroundImage: `url(${bpPattern})` }}
+        />
+        <span className="ch-hero__badge caps">Rebrand</span>
+        <div className="ch-hero__layout">
+          <img
+            src={heroPhotoCard}
+            alt="Chatorey fries being tossed with spice"
+            className="ch-hero__card"
+          />
+          <img
+            src={heroNoteCard}
+            alt="Chatorey is a bold Indian street food restaurant based in Scarborough. They came with a brand identity and needed it brought to life - visually, consistently, and at a level that reflects their vibe. Menu Photography Shoot | Brand Packaging | Art Direction"
+            className="ch-hero__note"
+          />
         </div>
       </section>
 
@@ -100,28 +103,30 @@ export default function Chatorey() {
         <Reveal tag="h2" className="ch-heading ch-heading--right ch-heading--small caps">
           Partner&rsquo;s Attire
         </Reveal>
-        <div className="ch-attire">
-          <div className="ch-attire__col ch-attire__col--main">
-            <Reveal tag="div">
-              <img src={attireHero} alt="Chatorey staff in branded aprons" />
-            </Reveal>
-            <Reveal tag="div" delay={0.07}>
-              <img
-                src={attireTeeModels}
-                alt="Chatorey staff t-shirt back design on two models"
-              />
-            </Reveal>
-          </div>
-          <div className="ch-attire__col ch-attire__col--details">
-            <Reveal tag="div" delay={0.1}>
-              <img src={attireCap} alt="Chatorey branded cap" />
-            </Reveal>
-            <Reveal tag="div" delay={0.17}>
-              <img src={attireTeeFlat} alt="Chatorey staff t-shirt design" />
-            </Reveal>
-            <Reveal tag="div" delay={0.24} className="ch-attire__apron">
-              <img src={attireApron} alt="Chatorey branded apron" />
-            </Reveal>
+        <div className="ch-attire-box">
+          <div className="ch-attire">
+            <div className="ch-attire__col ch-attire__col--main">
+              <Reveal tag="div">
+                <img src={attireHero} alt="Chatorey staff in branded aprons" />
+              </Reveal>
+              <Reveal tag="div" delay={0.07}>
+                <img
+                  src={attireTeeModels}
+                  alt="Chatorey staff t-shirt back design on two models"
+                />
+              </Reveal>
+            </div>
+            <div className="ch-attire__col ch-attire__col--details">
+              <Reveal tag="div" delay={0.1}>
+                <img src={attireCap} alt="Chatorey branded cap" />
+              </Reveal>
+              <Reveal tag="div" delay={0.17}>
+                <img src={attireTeeFlat} alt="Chatorey staff t-shirt design" />
+              </Reveal>
+              <Reveal tag="div" delay={0.24} className="ch-attire__apron">
+                <img src={attireApron} alt="Chatorey branded apron" />
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -250,6 +255,8 @@ export default function Chatorey() {
       </Reveal>
 
       <ProjectPager slug="chatorey" />
+
+      <PlaygroundOverlay pageKey="chatorey" rootSelector=".chatorey" />
     </main>
   )
 }
