@@ -2,71 +2,60 @@ import { useState } from 'react'
 import Nav from '../components/Nav.jsx'
 import { Reveal, RevealGrid } from '../components/Reveal.jsx'
 import FlipTitle from '../components/FlipTitle.jsx'
-import VideoFrame from '../components/VideoFrame.jsx'
+import YouTubeLoop from '../components/YouTubeLoop.jsx'
 import ProjectPager from '../components/ProjectPager.jsx'
 import './PCC.css'
 
-import fre8Poster from '../assets/pcc/fre8-poster.jpg'
+import fre8Poster from '../assets/pcc/thumbs/fre8-video-frame.jpg'
 import heroPanelistsBanyan from '../assets/pcc/hero-panelists-banyan.png'
 import banyanPolaroid from '../assets/pcc/banyan-ballroom-polaroid.jpg'
 import theatreHub from '../assets/pcc/theatre-hub.jpg'
 import thumbDhalla from '../assets/pcc/thumbs/dhalla.jpg'
 import thumbVisionFilm from '../assets/pcc/thumbs/vision-film.jpg'
-import thumbToor from '../assets/pcc/thumbs/toor.jpg'
 import thumbThiara from '../assets/pcc/thumbs/thiara.jpg'
 import thumbSingh from '../assets/pcc/thumbs/singh.jpg'
-import thumbBhatia from '../assets/pcc/thumbs/bhatia.jpg'
 
+// Hosted as unlisted YouTube embeds — public/videos/ is gitignored and every
+// file here exceeds GitHub's 100MB push limit, so these can't be committed
+// directly. See BRIEF.md Section 12 item 5 for the full constraint.
+// FRE8 has its own dedicated section further down the page — not part of
+// this block of 4.
 const films = [
   {
-    name: 'Dr. Ruby Dhalla',
-    role: 'Keynote introduction',
-    key: 'dhalla',
-    src: '/videos/pcc/dhalla.mov',
-    thumb: thumbDhalla,
-  },
-  {
-    name: 'PCC Vision Film',
-    role: '“The Power of the Room”',
-    key: 'vision-film',
-    src: '/videos/pcc/vision-film.mov',
-    thumb: thumbVisionFilm,
-  },
-  {
-    name: 'Sukhdev Toor',
-    role: 'Awardee portrait',
-    key: 'toor',
-    src: '/videos/pcc/toor.mov',
-    thumb: thumbToor,
-  },
-  {
-    name: 'Kim Thiara',
-    role: 'Awardee portrait',
-    key: 'thiara',
-    src: '/videos/pcc/thiara.mov',
-    thumb: thumbThiara,
-  },
-  {
     name: 'Amandipp Singh',
-    role: 'Awardee portrait',
+    role: 'Honoree film',
     key: 'singh',
-    src: '/videos/pcc/singh.mov',
+    youtubeId: 'Cwlfi6R42HI',
     thumb: thumbSingh,
   },
   {
-    name: 'Ishan Bhatia',
-    role: 'Awardee portrait',
-    key: 'bhatia',
-    src: '/videos/pcc/bhatia.mov',
-    thumb: thumbBhatia,
+    name: 'Gala Video',
+    role: 'The vision behind PCC',
+    key: 'gala',
+    youtubeId: 'HSQknM9vuLQ',
+    thumb: thumbVisionFilm,
+  },
+  {
+    name: 'Ruby Dhalla',
+    role: 'Honoree film',
+    key: 'dhalla',
+    youtubeId: 'sVF84UBBzwU',
+    thumb: thumbDhalla,
+  },
+  {
+    name: 'Kim Thiara',
+    role: 'Honoree film',
+    key: 'thiara',
+    youtubeId: '6EahZquGXc4',
+    thumb: thumbThiara,
   },
 ]
 
-function ClickToPlay({ film }) {
+function ClickToPlay({ film, hideCaption, className }) {
   const [playing, setPlaying] = useState(false)
 
   return (
-    <div className="pcc-video-tile">
+    <div className={`pcc-video-tile${className ? ` ${className}` : ''}`}>
       <button
         type="button"
         className="pcc-video-tile__frame"
@@ -75,15 +64,31 @@ function ClickToPlay({ film }) {
         aria-label={`Play ${film.name}`}
       >
         {playing ? (
-          <video className="pcc-video-tile__video" src={film.src} controls autoPlay />
+          <iframe
+            className="pcc-video-tile__video"
+            src={`https://www.youtube-nocookie.com/embed/${film.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+            title={film.name}
+            frameBorder="0"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
         ) : (
-          <img className="pcc-video-tile__poster" src={film.thumb} alt="" />
+          <>
+            <img className="pcc-video-tile__poster" src={film.thumb} alt="" />
+            <span className="pcc-video-tile__play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path d="M8 5v14l11-7z" fill="currentColor" />
+              </svg>
+            </span>
+          </>
         )}
       </button>
-      <div className="pcc-video-tile__caption">
-        <span className="pcc-video-tile__name">{film.name}</span>
-        <span className="pcc-video-tile__role">{film.role}</span>
-      </div>
+      {!hideCaption && (
+        <div className="pcc-video-tile__caption">
+          <span className="pcc-video-tile__name">{film.name}</span>
+          <span className="pcc-video-tile__role">{film.role}</span>
+        </div>
+      )}
     </div>
   )
 }
@@ -137,7 +142,12 @@ export default function PCC() {
 
       <section className="pcc-section">
         <Reveal tag="div" className="pcc-extra-photo">
-          <VideoFrame silent className="pcc-recap-video" src="/videos/pcc-linkedin-recap-trimmed.mp4" />
+          <YouTubeLoop
+            className="pcc-recap-video"
+            id="TSRy_JnM-pw"
+            duration={16}
+            title="Banyan tree animation, looping"
+          />
         </Reveal>
       </section>
 
@@ -146,7 +156,7 @@ export default function PCC() {
           Alongside the visual identity, we were tasked with communicating
           a message bigger: A keynote introduction, the Punjabi
           Chamber&rsquo;s vision film, and individual documentary portraits
-          of the evening&rsquo;s awardees. Click into any of the six below
+          of the evening&rsquo;s awardees. Click into any of the four below
           to watch.
         </Reveal>
       </section>
@@ -185,7 +195,10 @@ export default function PCC() {
       <section className="pcc-section fre8-section">
         <FlipTitle lines={['FRE8']} />
         <Reveal tag="div" className="fre8-video">
-          <VideoFrame src="/videos/fre8-founder.mov" poster={fre8Poster} />
+          <ClickToPlay
+            film={{ name: 'FRE8', youtubeId: 'b0CU6ovaSjY', thumb: fre8Poster }}
+            hideCaption
+          />
         </Reveal>
         <Reveal tag="p" className="pcc-copy" delay={0.07}>
           FRE8 is building an on-chain trucking and supply chain network,

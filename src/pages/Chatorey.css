@@ -72,61 +72,92 @@
 }
 
 /* ---------- Hero ---------- */
+/* Rebrand cover treatment — light "moodboard" hero that fits entirely in
+   one viewport (Nav overlays on top, no scroll needed to read it), rest of
+   the case study starts immediately below. Swapped from the old full-bleed
+   dark photo + overlaid tagline per Ashesh's new mockup. */
 
 .ch-hero {
   position: relative;
   height: 100vh;
   min-height: 560px;
+  max-height: 900px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+  color: #111;
 }
 
-.ch-hero__img {
+.ch-hero__pattern {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 40%;
+  background-repeat: repeat;
+  background-size: min(46vw, 620px);
+  opacity: 0.4;
 }
 
-.ch-hero__wash {
+.ch-hero__badge {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.35) 45%, transparent 75%);
-}
-
-.ch-hero__logo {
-  position: absolute;
-  top: clamp(1.5rem, 4vw, 2.75rem);
-  left: 50%;
-  transform: translateX(-50%);
-  width: clamp(9rem, 20vw, 13rem);
-  height: auto;
-}
-
-.ch-hero__tagline {
-  position: absolute;
-  right: clamp(1.25rem, 5vw, 3rem);
-  bottom: clamp(2rem, 6vw, 4rem);
-  max-width: 28rem;
-  text-align: right;
-}
-
-.ch-hero__tagline-main {
-  font-family: var(--font-title);
-  font-weight: 300;
-  font-size: clamp(1.05rem, 2.2vw, 1.5rem);
-  line-height: 1.45;
-  margin: 0 0 0.75rem;
-}
-
-.ch-hero__tagline-services {
+  top: clamp(1.5rem, 4vw, 2.5rem);
+  right: clamp(1.5rem, 5vw, 3.5rem);
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
-  line-height: 1.5;
-  opacity: 0.75;
-  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  opacity: 0.45;
+}
+
+.ch-hero__layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  max-width: 76rem;
+  width: 100%;
+  padding: 0 clamp(1.25rem, 5vw, 3rem);
+  transform: scale(1.38);
+}
+
+/* Both are pre-rendered PNGs (shadow, offset "stacked card" edge, and the
+   note's torn-paper bottom + copy are all baked into the files themselves
+   by Ashesh — not recreated in CSS) at native 1020x1360 (3:4), so equal
+   flex-basis widths keep them the same size side by side, matching the
+   reference exactly. */
+.ch-hero__card,
+.ch-hero__note {
+  flex: 0 1 24rem;
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .ch-hero {
+    height: auto;
+    min-height: 100vh;
+    padding: clamp(4rem, 12vw, 5rem) 0 clamp(3rem, 10vw, 4rem);
+  }
+
+  .ch-hero__layout {
+    flex-direction: column;
+    transform: none;
+  }
+
+  .ch-hero__card {
+    flex-basis: auto;
+    width: 100%;
+    height: auto;
+    max-width: 20rem;
+  }
+
+  .ch-hero__note {
+    flex-basis: auto;
+    max-width: 22rem;
+  }
 }
 
 /* ---------- Grids ---------- */
@@ -239,9 +270,18 @@
 
 /* ---------- Partner's Attire ---------- */
 
+/* White grid-block frame containing the whole attire layout, per Ashesh's
+   layout-mockup pass — a visible rectangle rather than the section just
+   floating in the page's black. */
+.ch-attire-box {
+  border: 1px solid #f2f2f2;
+  background: #f2f2f2;
+  padding: clamp(1.25rem, 4vw, 3rem);
+}
+
 .ch-attire {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1.6fr 1fr;
   gap: clamp(1.25rem, 3vw, 2.5rem);
   align-items: start;
 }
@@ -257,10 +297,12 @@
 }
 
 .ch-attire__col--details img {
+  /* Natural aspect ratio per image (cap runs wide, tee/apron run tall) —
+     was force-cropped into a uniform 1:1 square; Ashesh's resize pass on
+     each image showed they read better at their own proportions. */
   width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  /* Keyed cutouts on the page — crisp, no box, no edge-fade halo. */
+  height: auto;
+  display: block;
 }
 
 /* Apron is the lead detail shot — sized up beyond the cap/tee above it,
