@@ -1,7 +1,6 @@
 import Nav from '../components/Nav.jsx'
 import { Reveal, RevealGrid } from '../components/Reveal.jsx'
 import ProjectPager from '../components/ProjectPager.jsx'
-import PlaygroundOverlay from '../components/PlaygroundOverlay.jsx'
 import './Chatorey.css'
 
 import heroPhotoCard from '../assets/chatorey/hero/photo-card.png'
@@ -255,8 +254,6 @@ export default function Chatorey() {
       </Reveal>
 
       <ProjectPager slug="chatorey" />
-
-      <PlaygroundOverlay pageKey="chatorey" rootSelector=".chatorey" />
     </main>
   )
 }
